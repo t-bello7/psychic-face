@@ -1,0 +1,14 @@
+{
+  "name": "face_detection",
+  "version": "1.0.0",
+  "description": "A face registration and detector application.",
+  "main": "server.js",
+  "repository": "https://github.com/t-bello7/face_detection",
+  "author": "t-bello",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-openid-connect": "^2.5.0"
+  }
+}
