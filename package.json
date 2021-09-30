@@ -21,6 +21,6 @@
   "author": "t-bello",
   "scripts": {
     "test": "echo \"Error: no test specifed\" && exit 1",
-    "start": "yarn start"
+    "start": "node server.js"
   }
 }
