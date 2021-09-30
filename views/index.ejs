@@ -9,8 +9,11 @@
 <body>
     <section>
         <h1>Welcome to my facial Recognition software </h1>
+        <% if isAuthenticated { %>
+            <button> <a href="/user"> Just Dive in</a></button>
+            <% } else { %>
         <button>  <a href="/login">Login </a> </button>
+        <% } %>
     </section>
-
 </body>
 </html>

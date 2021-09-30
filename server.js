@@ -2,12 +2,14 @@ const fs = require('fs');
 const path = require('path');
 
 const express = require('express');
-
+const expressSession = require("express-session");
+const passport = require("passport");
+const Auth0Strategy = require("passport-auth0");
 const mongoose = require('mongoose');
 
-const { auth, requiresAuth } = require('express-openid-connect');
+// const { auth, requiresAuth } = require('express-openid-connect');
 const multer = require('multer');
-
+const authRouter = require("./auth");
 //I'm yet to implement the api as of these blog post 
 const faceapi = require("face-api.js")
 require('dotenv').config();
@@ -20,12 +22,22 @@ mongoose.connect(mongoDB,{useNewUrlParser:true, useUnifiedTopology: true});
 
 // Start a server instance with express
 const app = express();
-
+const router = express.Router();
 // Start a database instance
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+const session = {
+    secret: process.env.SESSION_SECRET,
+    cookie: {},
+    resave: false,
+    saveUninitialized: false
+  };
 
+  if (app.get("env") === "production") {
+    // Serve secure cookies, requires HTTPS
+    session.cookie.secure = true;
+  }
 //Build a Schema for our student collection in our database 
 let studentModelSchema = new Schema({
     first_name : {
@@ -57,64 +69,105 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage: storage});
 
-// Auth0 
-app.use(
-    auth({
-        authRequired: false,
-        auth0Logout: true,
-        session:{
-            cookie:{
-                domain: 'localhost'
-            }
-        },
-        issuerBaseURL: process.env.ISSUER_BASE_URL,
-        baseURL: process.env.BASE_URL,
-        clientID: process.env.CLIENT_ID,
-        secret: process.env.SECRET,
-    })
-)
+// // Auth0 
+// app.use(
+//     auth({
+//         authRequired: false,
+//         auth0Logout: true,
+//         session:{
+//             cookie:{
+//                 domain: 'localhost'
+//             }
+//         },
+//         issuerBaseURL: process.env.ISSUER_BASE_URL,
+//         baseURL: process.env.BASE_URL,
+//         clientID: process.env.CLIENT_ID,
+//         secret: process.env.SECRET,
+//     })
+// )
 // setting up json middleware
 app.use(express.json());
 
 
 //setting up static files
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(expressSession(session));
+
 //setting up view's & EJS
-app.set('views', './views');
-app.set('view engine','ejs');
+app.set("views", path.join(__dirname, "views"));
+// app.set('view engine','ejs');
+app.set("view engine", "pug");
 
 app.set('trust proxy', true)
+const strategy = new Auth0Strategy(
+    {
+      domain: process.env.AUTH0_DOMAIN,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      callbackURL: process.env.AUTH0_CALLBACK_URL
+    },
+    function(accessToken, refreshToken, extraParams, profile, done) {
+      /**
+       * Access tokens are used to authorize users to an API
+       * (resource server)
+       * accessToken is the token to call the Auth0 API
+       * or a secured third-party API
+       * extraParams.id_token has the JSON Web Token
+       * profile has all the information from the user
+       */
+      return done(null, profile);
+    }
+  );
+passport.use(strategy);
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+  });
+  
+  passport.deserializeUser((user, done) => {
+    done(null, user);
+  });
 
 
-// Navigation
-app.get('/', function(req, res){
-    studentModel.find({}, (err,items)=>{
-        if (err){
-            console.log(err);
-            res.status(500).send("An error occured", err);
-        }
-        else {
-        res.render(req.oidc.isAuthenticated() ? 'home' : 'index', {items:items});
-        }
-    })
-});
-
+  
+//routing
 //--My AI logic
-app.get('/check', (req, res)=>{
+const secured = (req, res, next) => {
+    if (req.user) {
+      return next();
+    }
+    req.session.returnTo = req.originalUrl;
+    res.redirect("/login");
+  };
+  
+app.use("/", authRouter);
+router.get('/check', (req, res)=>{
     res.render('check');
  })
 
 
+//  app.get("/login", ... );
+
+ 
 // app.get('/register',(req, res)=>{
 //    res.render('register')
 // })
+app.get("/", (req, res, next) => {
+    res.render('index')
+});
 
-app.get('/profile', requiresAuth(), (req, res)=>{
-    res.send(JSON.stringify(req.oidc.user));
-})
+app.get("/profile", secured, (req, res, next) => {
+    const { _raw, _json, ...userProfile } = req.user;
+    res.render("user", {
+      title: "Profile",
+      userProfile: userProfile
+    });
+  });
 
-
-app.post('/regsiter-student', requiresAuth(), upload.single('student_image'),(req, res, next)=>{
+app.post('/regsiter-student', secured, upload.single('student_image'),(req, res, next)=>{
     let obj = {
         first_name : req.body.first_name,
         last_name : req.body.last_name,
@@ -135,9 +188,16 @@ app.post('/regsiter-student', requiresAuth(), upload.single('student_image'),(re
     
 });
 
-app.post('/check', requiresAuth(), (req, res, next)=>{
+app.post('/check', secured, (req, res, next)=>{
     console.log(req.body)
 })
+
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.isAuthenticated();
+    next();
+  });
+
+
 
 app.listen(port, ()=>{
     console.log(`Now listening on port ${port}`)    
