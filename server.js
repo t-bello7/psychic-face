@@ -4,7 +4,6 @@ const path = require('path');
 const express = require('express');
 
 const mongoose = require('mongoose');
-const mongoDB =  process.env.MONGO_URL
 
 const { auth, requiresAuth } = require('express-openid-connect');
 const multer = require('multer');
@@ -12,6 +11,7 @@ const multer = require('multer');
 //I'm yet to implement the api as of these blog post 
 const faceapi = require("face-api.js")
 require('dotenv').config();
+const mongoDB =  process.env.MONGO_URL
 const port = process.env.PORT || 5000;
 
 //Schema class from the mongoose module
