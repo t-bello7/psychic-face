@@ -15,7 +15,6 @@
     "mongoose": "^6.0.8",
     "multer": "^1.4.3"
   }, 
-
   "author": "t-bello",
   "scripts": {
     "test": "echo \"Error: no test specifed\" && exit 1",
