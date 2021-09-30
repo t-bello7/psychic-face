@@ -6,7 +6,6 @@
     "face-detector",
     "heroku"
   ],
-  "author": "t-bello",
   "dependencies": {
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
@@ -18,5 +17,10 @@
   }, 
   "engines": {
     "node": "14.x"
-  } 
+  } ,
+  "author": "t-bello",
+  "scripts": {
+    "test": "echo \"Error: no test specifed\" && exit 1",
+    "start": "yarn start"
+  }
 }
