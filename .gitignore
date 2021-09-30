@@ -1,5 +1,4 @@
 /face-api.js
 /node_modules
-.gitignore
-.env
-
+/*.env
+npm-debug.log
