@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <h1> Check if student is in your registered class</h1>
+        <!-- <canvas id="canvas" class="face"></canvas> -->
+        <canvas class="video"></canvas>
+        <video autoplay="true" id="webcam"></video>
+        <div> <button id="startbutton">Take photo </button></div>
+        <button id="verify"> Verify  </button>
+        <div class="output">
+            <img src="" alt="" id="photo">
+        </div>
+    </section>
+    <!-- <script src="js/jquery-2.1.1.min.js"></script> -->
+    <script src="js/face-api.js"></script>
+
+    <script>
+        // A self executing function 
+        (function(){
+                let width = 320;
+                let height = 0;
+                let streaming = false;
+                let video = null;
+                let canvas = null;
+                let photo = null;
+                let startbutton = null;
+                function startup(){
+                    if (navigator.mediaDevices.getUserMedia) {
+                        video = document.querySelector("#webcam");
+                        canvas = document.querySelector('.video');
+                        const faceCanvas = document.querySelector('.face');
+                        photo = document.querySelector('#photo');
+                        startbutton = document.getElementById('startbutton');
+
+                        const ctx = canvas.getContext('2d');
+                        const faceCtx = canvas.getContext('2d');
+                        navigator.mediaDevices.getUserMedia({ video: true , audio:false})
+                            .then(function (stream) {
+                            video.srcObject = stream;
+                            video.play();
+                            })
+                            .catch(function (err0r) {
+                            console.log("Something went wrong!");
+                        });
+
+                        video.addEventListener('canplay', function(ev){
+                            if (!streaming){
+                                height = video.videoHeight / (video.videoWidth / width);
+                                if (isNaN(height)){
+                                    height = width / (4/3);
+                                }
+
+                            video.setAttribute('width', width);
+                            video.setAttribute('height', height);
+                            video.setAttribute('width', width);
+                            video.setAttribute('height', height);
+                            streaming = true;
+                            }
+                        }, false);
+                    
+                        startbutton.addEventListener('click', function(ev){
+                        takepicture();
+                        ev.preventDefault();
+                        }, false);
+
+                    clearPhoto();
+            }
+            else{
+                    // manipluate dom to print connect a webcam 
+                    // or allow mediadevices on browser
+                }
+             }
+                function clearPhoto(){
+                    let photocontext = canvas.getContext('2d');
+                    photocontext.fillStyle = "#AAA";
+                    photocontext.fillRect(0,0, canvas.width, canvas.height);
+                    
+                    let data = canvas.toDataURL('image/png');
+                    photo.setAttribute('src', data);
+                }
+                function takepicture(){
+                    let photocontext = canvas.getContext('2d');
+                    if (width && height){
+                        canvas.width = width;
+                        canvas.height = height;
+                        photocontext.drawImage(video, 0, 0, width, height);
+
+                        let data = canvas.toDataURL('image/png');
+                        let data64 = data.replace('data:image/png;base64,', '');
+                        verify = document.querySelector('#verify');
+                        async function postData(url = '', data={}){
+                            const response = await fetch(url, {
+                                method: 'post',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(data)
+                            });
+                            return response.json()
+                               }
+                        postData('/check', {"image_string64":data64}).then(data => {
+                                   console.log(data);
+                        });
+                        photo.setAttribute('src', data);
+                        }
+                        else {
+                        clearPhoto();
+                    }
+                }
+
+               
+                // let temp = []
+                // // $("#videoElement").bind("loadedmetadata", function(){
+                //     displaySize = { width:this.scrollWidth, height: this.scrollHeight }
+
+                //     async function detect(){
+
+                //         const MODEL_URL = '/models'
+
+                //         await faceapi.loadSsdMobilenetv1Model(MODEL_URL)
+                //         await faceapi.loadFaceLandmarkModel(MODEL_URL)
+                //         await faceapi.loadFaceRecognitionModel(MODEL_URL)
+
+                //         let canvas = $("#canvas").get(0);
+
+                //         facedetection = setInterval(async () =>{
+
+                //             let fullFaceDescriptions = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
+                //             let canvas = $("#canvas").get(0);
+                //             faceapi.matchDimensions(canvas, displaySize)
+
+                //             const fullFaceDescription = faceapi.resizeResults(fullFaceDescriptions, displaySize)
+                //             // faceapi.draw.drawDetections(canvas, fullFaceDescriptions)
+
+                //             const labels = ["img/steveoni"]
+
+                //             const labeledFaceDescriptors = await Promise.all(
+                //                 labels.map(async label => {
+                //                     // fetch image data from urls and convert blob to HTMLImage element
+                //                     const imgUrl = `${label}.JPG`
+                //                     const img = await faceapi.fetchImage(imgUrl)
+                                    
+                //                     // detect the face with the highest score in the image and compute it's landmarks and face descriptor
+                //                     const fullFaceDescription = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                                    
+                //                     if (!fullFaceDescription) {
+                //                     throw new Error(`no faces detected for ${label}`)
+                //                     }
+                                    
+                //                     const faceDescriptors = [fullFaceDescription.descriptor]
+                //                     return new faceapi.LabeledFaceDescriptors(label, faceDescriptors)
+                //                 })
+                //             );
+
+                //             const maxDescriptorDistance = 0.6
+                //             const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, maxDescriptorDistance)
+
+                //             const results = fullFaceDescriptions.map(fd => faceMatcher.findBestMatch(fd.descriptor))
+
+                //             results.forEach((bestMatch, i) => {
+                //                 const box = fullFaceDescriptions[i].detection.box
+                //                 const text = bestMatch.toString()
+                //                 const drawBox = new faceapi.draw.DrawBox(box, { label: text })
+                //                 drawBox.draw(canvas)
+                //             })
+
+                //         },300);
+
+                        // console.log(displaySize)
+                    // }
+                    // detect()
+                    
+                // });
+
+                window.addEventListener('load', startup, false);
+        })();
+    </script>
+</body>
+</html>
