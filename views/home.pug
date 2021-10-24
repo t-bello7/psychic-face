@@ -1,0 +1,35 @@
+extends layout 
+block layout-content 
+    section.index.home
+        div.homeView.container
+            div.register-form
+                h1 Register A Student 
+                div 
+                    form(action="/register" method="POST" enctype="multipart/form-data")
+                        div
+                            label(for="firstName") First Name
+                            input(type="text" id="first_name" name="firstName" placeholder="First Name")
+                        div
+                            label(for="lastName") Last Name
+                            input(type="text" id="last_name" name="lastName" placeholder="Last Name")
+
+                        div
+                            label(for="studentImage") Upload Image   
+                            input(type="file" name="studentImage" value="" id="student_image")
+                        
+                        input(type="submit", value="submit" class="NavButton")
+                        
+            div.check
+                h1 List of Registered Student
+                div 
+                    for item in items 
+                        h5 = item.first_name
+                        h5 = item.last_name
+                    a(href="/check") check 
+        section.modal 
+            a(href="/logout")
+            div.NavButton Logout
+    script.
+        submit = document.querySelector('.NavButton').value
+        file = document.querySelector('#student_image')
+        console.log(submit)

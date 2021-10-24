@@ -10,8 +10,8 @@ const mongoose = require('mongoose');
 // const { auth, requiresAuth } = require('express-openid-connect');
 const multer = require('multer');
 const authRouter = require("./auth");
-//I'm yet to implement the api as of these blog post 
-const faceapi = require("face-api.js")
+
+// const faceapi = require("face-api.js")
 require('dotenv').config();
 const mongoDB =  process.env.MONGO_URL
 const port = process.env.PORT || 5000;
@@ -25,6 +25,8 @@ const app = express();
 const router = express.Router();
 // Start a database instance
 const db = mongoose.connection;
+// add face detection
+const faceapi = require('./detector');
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const session = {
@@ -48,7 +50,7 @@ let studentModelSchema = new Schema({
     },
     student_image : {
         data : Buffer,
-        contenType: String
+        contentType: String
     }
 })
 
@@ -123,6 +125,15 @@ passport.use(strategy);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated();
+  next();
+});
+
+
+app.use("/", authRouter);
+
+
 passport.serializeUser((user, done) => {
     done(null, user);
   });
@@ -134,30 +145,30 @@ passport.serializeUser((user, done) => {
 
   
 //routing
-//--My AI logic
+
 const secured = (req, res, next) => {
     if (req.user) {
       return next();
     }
-    req.session.returnTo = req.originalUrl;
+    // req.session.returnTo = req.originalUrl;
     res.redirect("/login");
   };
   
-app.use("/", authRouter);
-router.get('/check', (req, res)=>{
+app.get('/check', secured, (req, res)=>{
     res.render('check');
  })
 
-
-//  app.get("/login", ... );
-
- 
-// app.get('/register',(req, res)=>{
-//    res.render('register')
-// })
+app.get("/home", secured, (req, res, next) => {
+  // const items = studentModel.find()
+  const items = {
+    
+  }
+  res.render('home',{items:items})
+});
 app.get("/", (req, res, next) => {
     res.render('index')
 });
+
 
 app.get("/profile", secured, (req, res, next) => {
     const { _raw, _json, ...userProfile } = req.user;
@@ -167,36 +178,42 @@ app.get("/profile", secured, (req, res, next) => {
     });
   });
 
-app.post('/regsiter-student', secured, upload.single('student_image'),(req, res, next)=>{
+app.post('/register', secured, upload.single('studentImage'),(req, res, next)=>{
+
+
     let obj = {
-        first_name : req.body.first_name,
-        last_name : req.body.last_name,
+        first_name : req.body.firstName,
+        last_name : req.body.lastNname,
         student_image: {
             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-            contentType : 'image/png'
+            // contentType : 'image/png'
         }
     }
-    studentModel.create(obj, (err, item) =>{
+    
+    studentModel.create(obj, (err, item) => {
         if(err){
-            console.log(err);
+            console.log(err.field);
         }
         else{
             item.save();
-            res.redirect('/');
+            res.redirect('/home');
         }
     });
     
 });
-
-app.post('/check', secured, (req, res, next)=>{
-    console.log(req.body)
+app.get('/check/:studentId', secured, (req, res, next)=>{
+    //query to get student img
+    // improve to get 5 student_imag 
 })
 
-app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.isAuthenticated();
-    next();
-  });
+app.post("/upload", async(req, res)=>{
+  const {file} = req.files;
+  const result = await faceapi.detect(file.data);
 
+  res.json({
+    detectedFaces: result.length,
+  });
+});
 
 
 app.listen(port, ()=>{

@@ -7,6 +7,8 @@
     "heroku"
   ],
   "dependencies": {
+    "@tensorflow/tfjs-node": "^3.9.0",
+    "canvas": "^2.8.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -17,11 +19,15 @@
     "multer": "^1.4.3",
     "passport": "^0.5.0",
     "passport-auth0": "^1.4.0",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "uuid": "^8.3.2"
   },
   "author": "t-bello",
   "scripts": {
     "test": "echo \"Error: no test specifed\" && exit 1",
     "start": "node server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
   }
 }

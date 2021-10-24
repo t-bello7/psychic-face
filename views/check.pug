@@ -1,0 +1,21 @@
+extends layout
+block layout-content
+    section.home 
+        div.container
+            h1 Check if student is in your registered class
+            div.wrap
+                video(src="", autoplay="true")#webcam
+                canvas.video 
+                canvas.face
+            div 
+                button#startbutton Take photo 
+            div
+                //- p Enter Student Id
+                //- input(type="text")#studentId
+                button#verify Verify 
+            div 
+                a(href="/home") 
+                    p Go back home
+            div.output
+                img(src="", alt="", srcset="")#photo
+                

@@ -6,14 +6,13 @@ const querystring = require("querystring");
 require("dotenv").config();
 
 
-
 router.get(
     "/login",
     passport.authenticate("auth0", {
       scope: "openid email profile"
     }),
     (req, res) => {
-      res.redirect("/");
+      res.redirect("/home");
     }
   );
   
@@ -45,7 +44,8 @@ router.get("/callback", (req, res, next) => {
         }
         const returnTo = req.session.returnTo;
         delete req.session.returnTo;
-        res.redirect(returnTo || "/");
+        
+        res.redirect( returnTo || "/home");
       });
     })(req, res, next);
   });
