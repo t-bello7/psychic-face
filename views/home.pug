@@ -5,7 +5,7 @@ block layout-content
             div.register-form
                 h1 Register A Student 
                 div 
-                    form(action="/register" method="POST" enctype="multipart/form-data")
+                    form(action="" class="register" method="POST" enctype="multipart/form-data")
                         div
                             label(for="firstName") First Name
                             input(type="text" id="first_name" name="firstName" placeholder="First Name")
@@ -16,20 +16,25 @@ block layout-content
                         div
                             label(for="studentImage") Upload Image   
                             input(type="file" name="studentImage" value="" id="student_image")
+                        input(type="submit", value="Submit" class="NavButton")
                         
-                        input(type="submit", value="submit" class="NavButton")
-                        
-            div.check
+            div.registered-student
                 h1 List of Registered Student
                 div 
-                    for item in items 
-                        h5 = item.first_name
-                        h5 = item.last_name
-                    a(href="/check") check 
+                    each item, i in items 
+                        li= item.first_name
+                    form(action="" class="check" method="POST" enctype="multipart/form-data")
+                        div
+                            label(for="checkImage") Upload an Image you want to check 
+                            input(type="file" name="checkImage" id="check_image")
+                        input(type="submit", value="Check" class="NavButton")
+                    
         section.modal 
             a(href="/logout")
-            div.NavButton Logout
-    script.
-        submit = document.querySelector('.NavButton').value
-        file = document.querySelector('#student_image')
-        console.log(submit)
+                div.NavButton Logout
+        script(src="js/main.js" type="module")
+        
+    //- script.
+    //-     submit = document.querySelector('.NavButton').value
+    //-     file = document.querySelector('#student_image')
+    //-     console.log(submit)

@@ -6,16 +6,13 @@ block layout-content
             div.wrap
                 video(src="", autoplay="true")#webcam
                 canvas.video 
-                canvas.face
             div 
-                button#startbutton Take photo 
-            div
-                //- p Enter Student Id
-                //- input(type="text")#studentId
-                button#verify Verify 
+                //- button#startbutton Take photo 
             div 
                 a(href="/home") 
                     p Go back home
             div.output
                 img(src="", alt="", srcset="")#photo
-                
+    script(src="js/face-api.min.js" type="module")   
+    script(src="js/detect.js" type="module")
+    

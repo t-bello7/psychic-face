@@ -93,8 +93,10 @@ img {
   grid-row: 1;
 }
 
-.face {
+.video {
   position: absolute;
+  top: 0;
+  left: 0;
 }
 /* Tab responsiveness*/
 

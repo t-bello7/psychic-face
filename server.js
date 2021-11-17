@@ -1,33 +1,74 @@
 const fs = require('fs');
 const path = require('path');
-
 const express = require('express');
 const expressSession = require("express-session");
 const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
-const mongoose = require('mongoose');
-
-// const { auth, requiresAuth } = require('express-openid-connect');
 const multer = require('multer');
 const authRouter = require("./auth");
 
-// const faceapi = require("face-api.js")
+const  cors = require('cors');
+
 require('dotenv').config();
-const mongoDB =  process.env.MONGO_URL
+
 const port = process.env.PORT || 5000;
 
-//Schema class from the mongoose module
-const Schema = mongoose.Schema;
-mongoose.connect(mongoDB,{useNewUrlParser:true, useUnifiedTopology: true});
 
 // Start a server instance with express
 const app = express();
+app.use(cors({origin:'*'}));
+
+
 const router = express.Router();
 // Start a database instance
-const db = mongoose.connection;
-// add face detection
-const faceapi = require('./detector');
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const mysql = require('mysql2');
+
+// let mysqlConnection = null;
+// const getMysqlConnection = async () =>{
+//   // Check to see if connection exists and is not in the closing state
+//   if (!mysqlConnection || mysqlConnection?.connection?._closing){
+//     mysqlConnection = await createNewMysqlConnection();
+//   }
+//   return mysqlConnection;
+// }
+// const createNewMysqlConnection = async() =>{
+//   const con = mysql.createPool({
+//     host: process.env.HOST,
+//     user: process.env.USER_DB,
+//     port: process.env.PORT_DB,
+//     password: process.env.PASSWORD,
+//     database: process.env.DATABASE
+//   })
+//   connection.connection.stream.on('close', ()=>{
+//     console.log("MySQL connection closed");
+//   });
+//   return connection;
+// }
+
+// const connection =  getMysqlConnection();
+
+const con = mysql.createConnection({
+  host: process.env.HOST,
+  user: process.env.USER_DB,
+  port: process.env.PORT_DB,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+  connectionLimit: 20,
+  queueLimit: 0,
+  waitForConnections: true
+})
+const createStudentDb = async() =>{ 
+ await con.connect((err) => {
+    if(err) throw err;
+    let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL,PRIMARY KEY(id))";
+    con.query(sql, function(err, result){
+      if (err) throw err;
+    })
+  })
+}
+
+createStudentDb()
+
 
 const session = {
     secret: process.env.SESSION_SECRET,
@@ -40,54 +81,55 @@ const session = {
     // Serve secure cookies, requires HTTPS
     session.cookie.secure = true;
   }
-//Build a Schema for our student collection in our database 
-let studentModelSchema = new Schema({
-    first_name : {
-        type: String
-    },
-    last_name : {
-        type: String
-    },
-    student_image : {
-        data : Buffer,
-        contentType: String
-    }
-})
 
-
-//Build a Model based one the studentModelSchema 
-let studentModel = mongoose.model('studentModel', studentModelSchema )
-
-// set up a storage path with multer to store uploaded image file
+// set up a storage engine with multer to store uploaded image file
 let storage = multer.diskStorage({
     destination: (req, file, cb)=>{
         cb(null, 'uploads')
     },
     filename: (req, file, cb) =>{
-        cb(null, file.fieldname + '-' + Date.now())
+        cb(null, file.fieldname+'-'+Date.now()+path.extname(file.originalname))
     }
 });
 
+let check_storage = multer.diskStorage({
+  destination : (req, file, cb ) =>{
+    cb(null, 'checks')
+  },
+  filename: (req, file, cb) =>{
+    cb(null, file.fieldname+'-'+Date.now()+path.extname(file.originalname))
+  }
+})
 
-let upload = multer({ storage: storage});
 
-// // Auth0 
-// app.use(
-//     auth({
-//         authRequired: false,
-//         auth0Logout: true,
-//         session:{
-//             cookie:{
-//                 domain: 'localhost'
-//             }
-//         },
-//         issuerBaseURL: process.env.ISSUER_BASE_URL,
-//         baseURL: process.env.BASE_URL,
-//         clientID: process.env.CLIENT_ID,
-//         secret: process.env.SECRET,
-//     })
-// )
-// setting up json middleware
+let checkFileType = (file, cb) =>{
+  const filetypes = /jpeg|jpg|png|gif/;
+  // check the extension
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  //check mimetype
+  const mimetype = filetypes.test(file.mimetype);
+
+  (mimetype && extname ) ? cb(null, true) : cb('Error: Images Only !  ')
+
+}
+let upload = multer({ 
+  storage: storage, 
+  fileFilter: (req, file,cb)=>{
+  checkFileType(file, cb)},
+  limits: { fileSize: 1024 * 1024 * 5 }
+  
+});
+
+
+
+
+let check_upload = multer({ 
+  storage: check_storage, 
+  fileFilter: (req, file,cb)=>{
+  checkFileType(file, cb)},
+  limits: { fileSize: 1024 * 1024 * 5 }
+});
+
 app.use(express.json());
 
 
@@ -145,7 +187,6 @@ passport.serializeUser((user, done) => {
 
   
 //routing
-
 const secured = (req, res, next) => {
     if (req.user) {
       return next();
@@ -159,61 +200,74 @@ app.get('/check', secured, (req, res)=>{
  })
 
 app.get("/home", secured, (req, res, next) => {
-  // const items = studentModel.find()
-  const items = {
-    
-  }
-  res.render('home',{items:items})
+  let sql = 'SELECT * from students'
+  con.query(sql, (err, result) =>{
+    if (err) throw err;
+    res.render('home',{items:result})
+  })
 });
+
+
 app.get("/", (req, res, next) => {
     res.render('index')
 });
 
-
 app.get("/profile", secured, (req, res, next) => {
-    const { _raw, _json, ...userProfile } = req.user;
-    res.render("user", {
-      title: "Profile",
-      userProfile: userProfile
-    });
+  const { _raw, _json, ...userProfile } = req.user;
+  res.render("user", {
+    title: "Profile",
+    userProfile: userProfile
   });
+});
 
-app.post('/register', secured, upload.single('studentImage'),(req, res, next)=>{
+
+app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
+  console.log(req.file.filename)
+  let image = path.join(__dirname + '/uploads/' + req.file.filename)
+  let base64image = fs.readFileSync(image, 'base64');
+  let obj = {
+      first_name : req.body.firstName,
+      last_name : req.body.lastName,
+      student_image: image,
+    };
+
+  let sql = 'INSERT INTO students SET ?';
+  con.query(sql, obj, (err) =>{
+    if(err) throw err;
+    res.redirect('/')
+  })  
 
 
-    let obj = {
-        first_name : req.body.firstName,
-        last_name : req.body.lastNname,
-        student_image: {
-            data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-            // contentType : 'image/png'
-        }
+
+});
+
+app.post("/check", secured, check_upload.single('checkImage') , (req, res)=>{
+  let check_image = path.join(__dirname + '/checks/' + req.file.filename)
+  let base64image = fs.readFileSync(check_image, 'base64');
+  let params = {
+    image : base64image,
+  }; 
+
+  let sql = 'SELECT student_image FROM students';
+  con.query(sql, (err, result)=>{
+    if (err) throw err;
+    console.log(result)
+    res.redirect('/')
+  })
+});
+
+
+
+app.get("/models/:modelName", (req, res)=>{
+  const facePath = path.join(__dirname, `/models/${req.params.modelName}`)
+  let readfile = fs.readFile(facePath, 'utf-8', (err,data)=>{
+    if(err){
+      console.error(err)
+      return
     }
-    
-    studentModel.create(obj, (err, item) => {
-        if(err){
-            console.log(err.field);
-        }
-        else{
-            item.save();
-            res.redirect('/home');
-        }
-    });
-    
-});
-app.get('/check/:studentId', secured, (req, res, next)=>{
-    //query to get student img
-    // improve to get 5 student_imag 
+    res.json(data)
+  })
 })
-
-app.post("/upload", async(req, res)=>{
-  const {file} = req.files;
-  const result = await faceapi.detect(file.data);
-
-  res.json({
-    detectedFaces: result.length,
-  });
-});
 
 
 app.listen(port, ()=>{
