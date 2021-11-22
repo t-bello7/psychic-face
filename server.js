@@ -23,29 +23,6 @@ const router = express.Router();
 // Start a database instance
 const mysql = require('mysql2');
 
-// let mysqlConnection = null;
-// const getMysqlConnection = async () =>{
-//   // Check to see if connection exists and is not in the closing state
-//   if (!mysqlConnection || mysqlConnection?.connection?._closing){
-//     mysqlConnection = await createNewMysqlConnection();
-//   }
-//   return mysqlConnection;
-// }
-// const createNewMysqlConnection = async() =>{
-//   const con = mysql.createPool({
-//     host: process.env.HOST,
-//     user: process.env.USER_DB,
-//     port: process.env.PORT_DB,
-//     password: process.env.PASSWORD,
-//     database: process.env.DATABASE
-//   })
-//   connection.connection.stream.on('close', ()=>{
-//     console.log("MySQL connection closed");
-//   });
-//   return connection;
-// }
-
-// const connection =  getMysqlConnection();
 
 const con = mysql.createConnection({
   host: process.env.HOST,
@@ -53,7 +30,7 @@ const con = mysql.createConnection({
   port: process.env.PORT_DB,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  connectionLimit: 20,
+  // connectionLimit: 20,
   queueLimit: 0,
   waitForConnections: true
 })
@@ -135,6 +112,10 @@ app.use(express.json());
 
 //setting up static files
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/uploads',express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, "checks")));
+
+
 
 app.use(expressSession(session));
 

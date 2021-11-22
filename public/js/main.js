@@ -1,8 +1,53 @@
+let pictureButton = document.querySelector('#take-picture');
+let cameraButton = document.querySelector('#start-camera');
+
+let video = document.querySelector('#video');
+let canvas = document.querySelector('#canvas');
+
+function dataUrlToFile(dataurl ,filename){
+    var arr = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), 
+    n = bstr.length, 
+    u8arr = new Uint8Array(n);
+    
+    while(n--){
+    u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, {type:mime});
+} 
+
+
+cameraButton.addEventListener('click', function(){
+   navigator.mediaDevices.getUserMedia({ video: true, audio: false})
+   .then(function(stream){
+   video.srcObject = stream;
+});
+});
+
+let image_file
+pictureButton.addEventListener('click', function(){
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    let image_data_url = canvas.toDataURL('image/jpeg');
+    image_file = dataUrlToFile(image_data_url, 'imagetaken.png')
+    console.log(image_file);
+})
 
 const registerForm = document.querySelector('.register');
-registerForm.addEventListener('submit', (e)=>{
+
+
+registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(registerForm);
+
+    console.log(formData.get('studentImage'))
+
+    if (formData.get('studentImage').name == '' ){
+        formData.set('studentImage', image_file)
+    }
+
+    console.log(formData.get('studentImage'))
     fetch('/register',{
         method: 'post',
         body: formData,
@@ -38,30 +83,4 @@ checkForm.addEventListener('submit', (e)=>{
     }).catch((err)=>{
         console.error(err)
     })
-})
-    
-
-
-        // function clearPhoto(){
-        //     let photocontext = canvas.getContext('2d');
-        //     photocontext.fillStyle = "#AAA";
-        //     photocontext.fillRect(0,0, canvas.width, canvas.height);
-            
-        //     let data = canvas.toDataURL('image/png');
-        //     photo.setAttribute('src', data);
-        // }
-        // function takepicture(){
-        //     let photocontext = canvas.getContext('2d');
-        //     if (width && height){
-        //         canvas.width = width;
-        //         canvas.height = height;
-        //         photocontext.drawImage(video, 0, 0, width, height);
-        //         let data = canvas.toDataURL('image/png');
-        //         let data64 = data.replace('data:image/png;base64,', '');
-        //         photo.setAttribute('src', data);
-        //         }
-        //         else {
-        //         clearPhoto();
-        //     }
-        
-        // }
+})   

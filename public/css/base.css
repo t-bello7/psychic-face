@@ -1,3 +1,9 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .main {
   height: 100%;
 }

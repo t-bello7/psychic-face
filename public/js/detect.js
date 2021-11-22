@@ -36,7 +36,7 @@ function startup(){
 
     }
     else{
-        console.log('hey')
+        alert("Connect your webcam")
         // manipluate dom to print connect a webcam 
         // or allow mediadevices on browser
     }
