@@ -32,16 +32,14 @@ img {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .index {
-  display: flex;
   height: 100vh;
+  margin-top: 3rem;
   color: white;
   position: relative;
-  justify-content: center;
-  align-items: center;
 }
 .home {
   height: 400px;

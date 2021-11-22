@@ -2,8 +2,7 @@ extends layout
 block layout-content 
     section.index.home
         div.homeView.container
-            //- div.register-form
-            div
+            div.register-form
                 h1 Register A Student 
                 div 
                     form(action="" class="register" method="POST" enctype="multipart/form-data")
@@ -42,8 +41,7 @@ block layout-content
                         input(type="submit", value="Check" class="NavButton")
                 a(href="/check")
                     div.NavButton check
-        //- section.modal 
-        section
+        section.modal 
             a(href="/logout")
                 div.NavButton Logout
         script(src="js/main.js" type="module")
