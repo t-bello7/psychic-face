@@ -35,15 +35,26 @@ block layout-content
                     each item, i in items 
                         li= item.first_name
                     form(action="" class="check" method="POST" enctype="multipart/form-data")
+                        div.flex
+                            span#start-camera-check Start Camera
+
+                            div
+                                video(src="" autoplay="true" width="320" height="240")#video-check
+                 
+                                span#take-picture-check Take Picture
+
+                                canvas(width="320" height="240")#canvas-check
+
                         div
                             label(for="checkImage") Upload an Image you want to check 
                             input(type="file" name="checkImage" id="check_image")
                         input(type="submit", value="Check" class="NavButton")
-                a(href="/check")
-                    div.NavButton check
+                
         section.modal 
             a(href="/logout")
                 div.NavButton Logout
+            a(href="/check")
+                    div.NavButton check
         script(src="js/main.js" type="module")
         
     //- script.

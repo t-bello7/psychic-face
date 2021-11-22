@@ -1,8 +1,20 @@
 let pictureButton = document.querySelector('#take-picture');
 let cameraButton = document.querySelector('#start-camera');
 
+let pictureButtonCheck = document.querySelector('#take-picture-check');
+let cameraButtonCheck = document.querySelector('#start-camera-check');
+
+
 let video = document.querySelector('#video');
 let canvas = document.querySelector('#canvas');
+
+
+let videoCheck = document.querySelector('#video-check');
+let canvasCheck  = document.querySelector('#canvas-check');
+
+
+let image_file
+let image_file_check
 
 function dataUrlToFile(dataurl ,filename){
     var arr = dataurl.split(','),
@@ -23,10 +35,9 @@ cameraButton.addEventListener('click', function(){
    navigator.mediaDevices.getUserMedia({ video: true, audio: false})
    .then(function(stream){
    video.srcObject = stream;
-});
+    });
 });
 
-let image_file
 pictureButton.addEventListener('click', function(){
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
     let image_data_url = canvas.toDataURL('image/jpeg');
@@ -64,7 +75,21 @@ registerForm.addEventListener('submit', (e) => {
     })
 })
 
+/*Check form */
 
+cameraButtonCheck.addEventListener('click', function(){
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false})
+    .then(function(stream){
+    videoCheck.srcObject = stream;
+     });
+ });
+ 
+ pictureButtonCheck.addEventListener('click', function(){
+     canvasCheck.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+     let image_data_url = canvas.toDataURL('image/jpeg');
+     image_file_check = dataUrlToFile(image_data_url, 'imagecheck.png');
+ })
+ 
 const checkForm = document.querySelector('.check');
 checkForm.addEventListener('submit', (e)=>{
     e.preventDefault();
