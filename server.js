@@ -69,16 +69,6 @@ let storage = multer.diskStorage({
     }
 });
 
-let check_storage = multer.diskStorage({
-  destination : (req, file, cb ) =>{
-    cb(null, 'checks')
-  },
-  filename: (req, file, cb) =>{
-    cb(null, file.fieldname+'-'+Date.now()+path.extname(file.originalname))
-  }
-})
-
-
 let checkFileType = (file, cb) =>{
   const filetypes = /jpeg|jpg|png|gif/;
   // check the extension
@@ -99,13 +89,6 @@ let upload = multer({
 
 
 
-
-let check_upload = multer({ 
-  storage: check_storage, 
-  fileFilter: (req, file,cb)=>{
-  checkFileType(file, cb)},
-  limits: { fileSize: 1024 * 1024 * 5 }
-});
 
 app.use(express.json());
 
@@ -176,9 +159,6 @@ const secured = (req, res, next) => {
     res.redirect("/login");
   };
   
-app.get('/check', secured, (req, res)=>{
-    res.render('check');
- })
 
 app.get("/home", secured, (req, res, next) => {
   let sql = 'SELECT * from students'
@@ -203,9 +183,7 @@ app.get("/profile", secured, (req, res, next) => {
 
 
 app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
-  console.log(req.file.filename)
-  let image = path.join(__dirname + '/uploads/' + req.file.filename)
-  let base64image = fs.readFileSync(image, 'base64');
+  let image = path.join('/uploads/' + req.file.filename)
   let obj = {
       first_name : req.body.firstName,
       last_name : req.body.lastName,
@@ -222,12 +200,7 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
 
 });
 
-app.post("/check", secured, check_upload.single('checkImage') , (req, res)=>{
-  let check_image = path.join(__dirname + '/checks/' + req.file.filename)
-  let base64image = fs.readFileSync(check_image, 'base64');
-  let params = {
-    image : base64image,
-  }; 
+app.get("/check", secured, (req, res)=>{
 
   let sql = 'SELECT student_image FROM students';
   con.query(sql, (err, result)=>{
