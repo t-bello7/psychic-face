@@ -7,23 +7,21 @@ let photo = null;
 let startbutton = null;
 
 video = document.querySelector("#webcam");
+let detectButton = document.querySelector('#detectbutton');
+// Promise.all([
+//     faceapi.loadTinyFaceDetectorModel('/models'),
+//     faceapi.loadSsdMobilenetv1Model('/models'),
+//     faceapi.loadFaceLandmarkModel('/models'),
+//     faceapi.loadFaceRecognitionModel('/models'),
+// ]).then(accessCamera)
 
-Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-    faceapi.loadTinyFaceDetectorModel('/models'),
-    faceapi.loadSsdMobilenetv1Model('/models'),
-    faceapi.loadFaceLandmarkModel('/models'),
-    faceapi.loadFaceRecognitionModel('/models'),
-
-]).then(startup)
-
-function startup(){
-    if (navigator.mediaDevices.getUserMedia){
-        canvas = document.querySelector('.video');
-        video = document.querySelector("#webcam");
-
+export async function accessCamera(){
+    console.log('clicked detect')
+    await faceapi.loadTinyFaceDetectorModel('/models')
+    await faceapi.loadSsdMobilenetv1Model('/models')
+    await faceapi.loadFaceLandmarkModel('/models')
+    await faceapi.loadFaceRecognitionModel('/models')
+    if(navigator.mediaDevices.getUserMedia){
         navigator.mediaDevices.getUserMedia({ video: true , audio:false})
             .then(function (stream) {
             video.srcObject = stream;
@@ -37,48 +35,39 @@ function startup(){
     }
     else{
         alert("Connect your webcam")
-        // manipluate dom to print connect a webcam 
-        // or allow mediadevices on browser
     }
 }
 
-video.addEventListener('play', () => {
+export function detectFace(){
     if (!streaming){
-    height = video.videoHeight / (video.videoWidth / width);
-    if (isNaN(height)){
-        height = width / (4/3);
-    }
+        height = video.videoHeight / (video.videoWidth / width);
+        if (isNaN(height)){
+            height = width / (4/3);
+        }
+        video.setAttribute('width', width);
+        video.setAttribute('height', height);
+        video.setAttribute('width', width);
+        video.setAttribute('height', height);
+        }
+        const canvas = faceapi.createCanvasFromMedia(videoCheck)
+        const wrapDiv = document.querySelector('.wrap');
+    
+        wrapDiv.append(canvas);
+    
+        const displaySize = {
+            width: video.width,
+            height: video.height
+        }
+        faceapi.matchDimensions(canvas, displaySize)
+    
+        setInterval(async () => {
+            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+            const resizedDetections = await faceapi.resizeResults(detections, displaySize)
+            canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
+            await faceapi.draw.drawDetections(canvas, resizedDetections)
+            await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+            }, 100)
+}
 
-
-    video.setAttribute('width', width);
-    video.setAttribute('height', height);
-    video.setAttribute('width', width);
-    video.setAttribute('height', height);
-    }
-    // streaming = true;
-
-    const canvas = faceapi.createCanvasFromMedia(video)
-    const wrapDiv = document.querySelector('.wrap');
-
-    wrapDiv.append(canvas);
-    console.log(video.height)
-    console.log(video.width)
-    const displaySize = {
-        width: video.width,
-        height: video.height
-    }
-    faceapi.matchDimensions(canvas, displaySize)
-
-    setInterval(async () => {
-        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
-        const resizedDetections = await faceapi.resizeResults(detections, displaySize)
-        canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
-        await faceapi.draw.drawDetections(canvas, resizedDetections)
-        await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-        }, 100)
-
-})
-
-// window.addEventListener('load', startup, false);
-
-startup();
+video.addEventListener('play', detectFace);
+detectButton.addEventListener('click', accessCamera);

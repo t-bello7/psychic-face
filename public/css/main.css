@@ -90,7 +90,16 @@ img {
   grid-column: 1;
   grid-row: 1;
 }
-
+.wrap-check {
+  position: relative;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.wrap-check > * {
+  grid-column: 1;
+  grid-row: 1;
+}
 .video {
   position: absolute;
   top: 0;
