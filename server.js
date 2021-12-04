@@ -160,18 +160,27 @@ const secured = (req, res, next) => {
   };
   
 
-app.get("/home", secured, (req, res, next) => {
-  let sql = 'SELECT * from students'
-  con.query(sql, (err, result) =>{
-    if (err) throw err;
-    res.render('home',{items:result})
-  })
-});
-
-
 app.get("/", (req, res, next) => {
     res.render('index')
 });
+
+app.get("/home", secured, (req, res, next) => {
+    res.render('home')
+});
+
+app.get('/add-student', secured, (req, res)=>{
+  res.render("add-student")
+});
+
+app.get('/all-students', secured,(req, res) =>{
+  let sql = 'SELECT * from students'
+  con.query(sql, (err, result)=>{
+    if (err) throw err;
+    res.render('all-students', {items:result})
+  })
+})
+
+
 
 app.get("/profile", secured, (req, res, next) => {
   const { _raw, _json, ...userProfile } = req.user;
@@ -195,10 +204,9 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
     if(err) throw err;
     res.redirect('/')
   })  
-
-
-
 });
+
+
 
 app.get("/check", secured, (req, res)=>{
 

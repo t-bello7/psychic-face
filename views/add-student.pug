@@ -1,0 +1,30 @@
+extends layout
+
+block layout-content 
+    main#main.main
+        h1 Register A Student 
+            div 
+                form(action="" class="register" method="POST" enctype="multipart/form-data")
+                    div
+                        label(for="firstName") First Name
+                        input(type="text" id="first_name" name="firstName" placeholder="First Name")
+                    div
+                        label(for="lastName") Last Name
+                        input(type="text" id="last_name" name="lastName" placeholder="Last Name")
+                    
+                    div.flex
+                        span#start-camera Start Camera
+
+                        div.wrap
+                            video(src="" autoplay="true" width="320" height="240")#video-cam
+                        span#take-picture Take Picture
+                        canvas(width="320" height="240")#canvas
+
+                        div
+                            label(for="studentImage") Upload Image   
+                            input(type="file" name="studentImage" value="" id="student_image")
+                    input(type="submit", value="Submit" class="NavButton")
+    script(src="js/face-api.min.js" type="module")
+        //- script(src="js/detect.js" type="module")   
+    script(src="js/main.js" type="module")
+        

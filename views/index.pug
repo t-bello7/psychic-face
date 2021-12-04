@@ -1,18 +1,21 @@
-extends layout
-
-block layout-content
-  section.index 
-    div.View.WelcomeView.container
-      h1 Student Registration Portal 
-      div.Message
-        div.Title
-        span.Details Access the Class Portal
-    section.modal 
-      //- h1 Login to Your Class
-      if isAuthenticated
-        a(href="/home")
-          div.NavButton Just dive in!
-      else
-        a(href="/login")
-          div.NavButton Log in
+doctype html
+html
+    head 
+        title knowledgebase 
+        link(rel="stylesheet", href="css/reset.css")
+        link(rel="stylesheet", href="css/main.css")
+    section.index 
+      div.View.WelcomeView.container
+        h1 Student Registration Portal 
+        div.Message
+          div.Title
+          span.Details Access the Class Portal
+      section.modal 
+        //- h1 Login to Your Class
+        if isAuthenticated
+          a(href="/home")
+            div.NavButton Just dive in!
+        else
+          a(href="/login")
+            div.NavButton Log in
       

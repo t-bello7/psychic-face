@@ -1,0 +1,33 @@
+extends layout
+
+block layout-content
+    main#main.main
+        .col-12 
+            .card.recent-sales 
+                .filter
+                a.icon(href="#" data-bs-toggle="dropdown")
+                    i.bi.bi-three-dots 
+                ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow 
+                    li.dropdown-header.text-start 
+                        h6 Filter 
+                    li
+                        a.dropdown-item(href="#") Today
+
+                .card-body 
+                    h5.card-title Students 
+                            table.table.table-borderless.datatable 
+                                thead 
+                                    tr 
+                                        th(scope="col") #
+                                        th(scope="col") First Name
+                                        th(scope="col") Last Name 
+                                        th(scope="col") Image Link 
+                                each item, i in items 
+                                    tbody 
+                                        tr 
+                                            th(scope="row")
+                                                a(href="#") i 
+                                            td item.first_name 
+                                            td item.last_name
+    
+

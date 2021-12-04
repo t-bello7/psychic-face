@@ -1,55 +1,54 @@
 extends layout 
 block layout-content 
-    section.index.home
-        div.homeView.container
-            div.register-form
-                h1 Register A Student 
-                div 
-                    form(action="" class="register" method="POST" enctype="multipart/form-data")
-                        div
-                            label(for="firstName") First Name
-                            input(type="text" id="first_name" name="firstName" placeholder="First Name")
-                        div
-                            label(for="lastName") Last Name
-                            input(type="text" id="last_name" name="lastName" placeholder="Last Name")
-                        
-                        div.flex
-                            span#start-camera Start Camera
+    main#main.main
+        .pagetitle 
+            h1 Dashboard 
+            nav 
+                ol.breadcrumb 
+                    li.breadcrumb-item 
+                        a(href="/home") Home 
+                    li.breadcrumb-item.active Dashboard
+        section.section.dashboard 
+            .row 
+                .col-lg-8 
+                    .row 
+                        a(href="/add-student")
+                            .col-xxl-4.col-md-6 
+                                .card.info-card.sales-card 
+                                    .card-body 
+                                        h5.card-title Add New Student
+                                        .d-flex.align-items-center 
+                                            .card-icon.rounded-circle.d-flex.align-items-center.justify-content-center 
+                                                i.bi.bi-plus-lg
+                        a(href="/all-students")
+                            .col-xxl-4.col-md-6 
+                                .card.info-card.sales-card 
+                                    .card-body 
+                                        h5.card-title View all Students
+                                        .d-flex.align-items-center 
+                                            .card-icon.rounded-circle.d-flex.align-items-center.justify-content-center 
+                                                i.bi.bi-view-stacked                                       
+                        a(href="/logout")
+                            .col-xxl-4.col-md-6 
+                                .card.info-card.sales-card 
+                                    .card-body 
+                                        h5.card-title Logout
+                                        .d-flex.align-items-center 
+                                            .card-icon.rounded-circle.d-flex.align-items-center.justify-content-center 
+                                                i.bi.bi-box-arrow-left                
+    //- section.index.home
+    //-     div.homeView.container
+    //-         div.register-form 
+    //-             form(action="" class="check" method="POST" enctype="multipart/form-data")
+    //-                 div.flex
+    //-                     span#start-camera-check Start Camera
 
-                            div.wrap
-                                video(src="" autoplay="true" width="320" height="240")#video-cam
-                            span#take-picture Take Picture
-                            canvas(width="320" height="240")#canvas
-
-                            div
-                                label(for="studentImage") Upload Image   
-                                input(type="file" name="studentImage" value="" id="student_image")
-                        input(type="submit", value="Submit" class="NavButton")
-                        
-            //- div.registered-student
-            div
-                h1 List of Registered Student
-                div 
-                    each item, i in items 
-                        li= item.first_name
-                    form(action="" class="check" method="POST" enctype="multipart/form-data")
-                        div.flex
-                            span#start-camera-check Start Camera
-
-                            div.wrap-check
-                                video(src="" autoplay="true" width="320" height="240")#video-check
-                            //- span#take-picture-check Take Picture
-                            //- canvas(width="320" height="240")#canvas-check
-
-                        div
-                            label(for="checkImage") Upload an Image you want to check 
-                            input(type="file" name="checkImage" id="check_image")
-                        input(type="submit", value="Check" class="NavButton")
-                
-        section.modal 
-            a(href="/logout")
-                div.NavButton Logout
-        script(src="js/face-api.min.js" type="module")
-        //- script(src="js/detect.js" type="module")   
-        script(src="js/main.js" type="module")
+    //-                     div.wrap-check
+    //-                         video(src="" autoplay="true" width="320" height="240")#video-check
+    //-                 div
+    //-                     label(for="checkImage") Upload an Image you want to check 
+    //-                     input(type="file" name="checkImage" id="check_image")
+    //-                 input(type="submit", value="Check" class="NavButton")
+    //-     script(src="js/face-api.min.js" type="module") 
+    //-     script(src="js/main.js" type="module")
         
