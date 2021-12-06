@@ -197,7 +197,7 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
       first_name : req.body.firstName,
       last_name : req.body.lastName,
       student_image: image,
-      image_descriptor:req.body.face_descriptor
+      image_descriptor: '{}'
     };
 
   let sql = 'INSERT INTO students SET ?';
