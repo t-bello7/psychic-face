@@ -22,12 +22,13 @@ block layout-content
                                         th(scope="col") First Name
                                         th(scope="col") Last Name 
                                         th(scope="col") Image Link 
-                                each item, i in items 
                                     tbody 
                                         tr 
+                                        each item in items 
                                             th(scope="row")
-                                                a(href="#") i 
-                                            td item.first_name 
-                                            td item.last_name
+                                                //- a(href="#")
+                                            td= item.first_name 
+                                            td= item.last_name
+                                            td= item.student_image
     
 
