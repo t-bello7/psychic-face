@@ -2,28 +2,29 @@ extends layout
 
 block layout-content 
     main#main.main
-        h1 Register A Student 
+        h1.card-title Register A Student 
             div 
-                form(action="" class="register" method="POST" enctype="multipart/form-data")
-                    div
-                        label(for="firstName") First Name
-                        input(type="text" id="first_name" name="firstName" placeholder="First Name")
-                    div
-                        label(for="lastName") Last Name
-                        input(type="text" id="last_name" name="lastName" placeholder="Last Name")
+                form(action="" class="register" method="POST" enctype="multipart/form-data").row.g-3
+                    div.col-md-6
+                        label(for="firstName").form-label First Name
+                        input(type="text" id="first_name" name="firstName" placeholder="First Name").form-control
+                    div.col-md-6
+                        label(for="lastName").form-label Last Name
+                        input(type="text" id="last_name" name="lastName" placeholder="Last Name").form-control
                     
                     div.flex
-                        span#start-camera Start Camera
-
+                        div
+                            label(for="studentImage").form-label Upload Image   
+                            input(type="file" name="studentImage" value="" id="student_image").form-select
+                        label().form-label Or Take A Picture
+                        span#start-camera.bi.bi-camera
                         div.wrap
                             video(src="" autoplay="true" width="320" height="240")#video-cam
-                        span#take-picture Take Picture
+                        span#close-camera.bi.bi-x-square 
                         canvas(width="320" height="240")#canvas
 
-                        div
-                            label(for="studentImage") Upload Image   
-                            input(type="file" name="studentImage" value="" id="student_image")
-                    input(type="submit", value="Submit" class="NavButton")
+                        
+                    input(type="submit", value="Submit" class="btn btn-primary")
     script(src="js/face-api.min.js" type="module")
         //- script(src="js/detect.js" type="module")   
     script(src="js/main.js" type="module")

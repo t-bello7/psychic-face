@@ -1,17 +1,15 @@
 doctype html
 html
     head 
-        title knowledgebase 
-        link(rel="stylesheet", href="css/reset.css")
-        link(rel="stylesheet", href="css/main.css")
+      title knowledgebase 
+      link(rel="stylesheet", href="css/reset.css")
+      link(rel="stylesheet", href="css/main.css")
     section.index 
-      div.View.WelcomeView.container
-        h1 Student Registration Portal 
-        div.Message
-          div.Title
-          span.Details Access the Class Portal
-      section.modal 
-        //- h1 Login to Your Class
+      div.container.home
+        div.font-1.mg-1 Psychic Face is a class portal for lecturers to register and easily identify students in a class.  This is a final project by HND3 part time class for the award of ond IN Computer Science.
+
+      section.container.modal 
+        div Access the Class Portal
         if isAuthenticated
           a(href="/home")
             div.NavButton Just dive in!

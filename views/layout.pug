@@ -17,12 +17,10 @@ html
             ul.d-flex.align-items-center 
                 li.nav-item.dropdown.pe-3 
                     a.nav-link.nav-profile.d-flex.align-items-center.pe-0(href="#" data-bs-toggle="dropdown")
-                        span.d-none.d-md-block.dropdown-toggle.ps-2 Lectrures name 
-
-
+                        span.d-none.d-md-block.dropdown-toggle.ps-2 Admin
                     ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow.profile 
                         li.dropdown-header 
-                            h6 name of lecture
+                            h6 lecturer
                         li 
                             hr.dropdown-divider
                         li 
@@ -38,7 +36,11 @@ html
             li.nav-item
                 a.nav-link.collapsed(href="/add-student")
                     i.bi.bi-plus-lg
-                    span Add Students 
+                    span Add Student 
+            li.nav-item 
+                a.nav-link.collapsed(href="/verify-student")
+                    i.bi.bi-person-check 
+                    span Verify Student
             li.nav-item 
                 a.nav-link.collapsed(href="/all-students")
                     i.bi.bi-menu-button-wide  
@@ -47,6 +49,7 @@ html
                 a.nav-link.collapsed(href="/logout")
                     i.bi.bi-box-arrow-left 
                     span Logout
+       
 
     body
         block layout-content

@@ -1,53 +1,30 @@
-/* import */
-
-/* resets */
-
-/* body {
-  line-height: 1.6;
-  background-image: url("/img/class-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-}
-
-ul {
-  list-style-type: none;
-}
-
-a {
-  text-decoration: none;
-}
-
-p {
-  margin: 10px 0;
-}
-
-img {
-  width: 100%;
-}
-
 /* helper css*/
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
-  /* overflow: auto; */
 }
-
+.font-1 {
+  font-weight: 600;
+}
+.mg-1 {
+  margin-bottom: 6rem 0;
+}
 .index {
   height: 100vh;
-  margin-top: 3rem;
   color: white;
-  position: relative;
+  /* position: relative; */
+  background-image: url("../img/class-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .home {
-  height: 400px;
 }
 .modal {
   position: absolute;
   width: 200px;
   height: 300px;
+  margin-top: 4rem;
   background-color: white;
   color: teal;
   border-radius: 0.5rem;
@@ -71,7 +48,7 @@ img {
 .homeView {
   display: flex;
 }
-s .wrap {
+.wrap {
   position: relative;
   display: grid;
   justify-content: center;
@@ -91,12 +68,18 @@ s .wrap {
   grid-column: 1;
   grid-row: 1;
 }
+#start-camera {
+  cursor: pointer;
+  margin: 0 2rem;
+}
+#close-camera {
+  cursor: pointer;
+}
 .video {
   position: absolute;
   top: 0;
   left: 0;
 }
-/* Tab responsiveness*/
 
 /*mobile responsivenes*/
 @media only screen and (max-width: 1400px) {

@@ -70,10 +70,7 @@ function dataUrlToFile(dataurl ,filename){
 } 
 
 cameraButton.addEventListener('click', async ()=>{
-    await faceapi.loadTinyFaceDetectorModel('/models')
-    await faceapi.loadSsdMobilenetv1Model('/models')
-    await faceapi.loadFaceLandmarkModel('/models')
-    await faceapi.loadFaceRecognitionModel('/models')
+
     navigator.mediaDevices.getUserMedia({ video: true , audio:false})
     .then(function (stream) {
     video.srcObject = stream;
@@ -85,12 +82,12 @@ cameraButton.addEventListener('click', async ()=>{
 });
 });
 
-pictureButton.addEventListener('click', function(){
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    let image_data_url = canvas.toDataURL('image/jpeg');
-    image_file = dataUrlToFile(image_data_url, 'imagetaken.png')
-    console.log(image_file);
-})
+// pictureButton.addEventListener('click', function(){
+//     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+//     let image_data_url = canvas.toDataURL('image/jpeg');
+//     image_file = dataUrlToFile(image_data_url, 'imagetaken.png')
+//     console.log(image_file);
+// })
 
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -130,37 +127,49 @@ video.addEventListener('play', ()=>{
         video.setAttribute('width', width);
         video.setAttribute('height', height);
         }
-        const canvas = faceapi.createCanvasFromMedia(video)
-        const wrapDiv = document.querySelector('.wrap');
+
+        Promise.all([
+            faceapi.loadTinyFaceDetectorModel('/models'),
+            faceapi.loadSsdMobilenetv1Model('/models'),
+            faceapi.loadFaceLandmarkModel('/models'),
+            faceapi.loadFaceRecognitionModel('/models'),
+        ]
+        ).then(()=>{
+            const canvas = faceapi.createCanvasFromMedia(video)
+            console.log(canvas)
+            const wrapDiv = document.querySelector('.wrap');
+        
+            wrapDiv.append(canvas);
+        
+            const displaySize = {
+                width: video.width,
+                height: video.height
+            }
+            faceapi.matchDimensions(canvas, displaySize)
+        
+            setInterval(async () => {
+                const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+                const resizedDetections = await faceapi.resizeResults(detections, displaySize)
+                canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
+                await faceapi.draw.drawDetections(canvas, resizedDetections)
+                await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+                }, 100)
+        })
+      
     
-        wrapDiv.append(canvas);
-    
-        const displaySize = {
-            width: video.width,
-            height: video.height
-        }
-        faceapi.matchDimensions(canvas, displaySize)
-    
-        setInterval(async () => {
-            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
-            const resizedDetections = await faceapi.resizeResults(detections, displaySize)
-            canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
-            await faceapi.draw.drawDetections(canvas, resizedDetections)
-            await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-            }, 100)
 })
 /*Check form */
 
-cameraButtonCheck.addEventListener('click', async function(){
-    await faceapi.loadTinyFaceDetectorModel('/models')
-    await faceapi.loadSsdMobilenetv1Model('/models')
-    await faceapi.loadFaceLandmarkModel('/models')
-    await faceapi.loadFaceRecognitionModel('/models')
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false})
-    .then(function(stream){
-    videoCheck.srcObject = stream;
-     });
- });
+// cameraButtonCheck.addEventListener('click', async function(){
+//     await faceapi.loadTinyFaceDetectorModel('/models')
+//     await faceapi.loadSsdMobilenetv1Model('/models')
+//     await faceapi.loadFaceLandmarkModel('/models')
+//     await faceapi.loadFaceRecognitionModel('/models')
+//     navigator.mediaDevices.getUserMedia({ video: true, audio: false})
+//     .then(function(stream){
+//     videoCheck.srcObject = stream;
+//      });
+//  });
  
 //  pictureButtonCheck.addEventListener('click', function(){
 //      canvasCheck.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -169,56 +178,56 @@ cameraButtonCheck.addEventListener('click', async function(){
 //  })
  
 
-videoCheck.addEventListener('play',()=>{
-    if (!streaming){
-        height = videoCheck.videoHeight / (videoCheck.videoWidth / width);
-        if (isNaN(height)){
-            height = width / (4/3);
-        }
-        videoCheck.setAttribute('width', width);
-        videoCheck.setAttribute('height', height);
-        videoCheck.setAttribute('width', width);
-        videoCheck.setAttribute('height', height);
-        }
-        const canvas = faceapi.createCanvasFromMedia(videoCheck)
-        console.log(canvas)
-        const wrapDiv = document.querySelector('.wrap-check');
+// videoCheck.addEventListener('play',()=>{
+//     if (!streaming){
+//         height = videoCheck.videoHeight / (videoCheck.videoWidth / width);
+//         if (isNaN(height)){
+//             height = width / (4/3);
+//         }
+//         videoCheck.setAttribute('width', width);
+//         videoCheck.setAttribute('height', height);
+//         videoCheck.setAttribute('width', width);
+//         videoCheck.setAttribute('height', height);
+//         }
+//         const canvas = faceapi.createCanvasFromMedia(videoCheck)
+//         console.log(canvas)
+//         const wrapDiv = document.querySelector('.wrap-check');
         
-        wrapDiv.append(canvas);
+//         wrapDiv.append(canvas);
     
-        const displaySize = {
-            width: videoCheck.width,
-            height: videoCheck.height
-        }
-        faceapi.matchDimensions(canvas, displaySize)
+//         const displaySize = {
+//             width: videoCheck.width,
+//             height: videoCheck.height
+//         }
+//         faceapi.matchDimensions(canvas, displaySize)
     
-        setInterval(async () => {
-            const detections = await faceapi.detectAllFaces(videoCheck, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
-            const resizedDetections = await faceapi.resizeResults(detections, displaySize)
-            canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
-            await faceapi.draw.drawDetections(canvas, resizedDetections)
-            await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-            }, 100)
-});
+//         setInterval(async () => {
+//             const detections = await faceapi.detectAllFaces(videoCheck, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+//             const resizedDetections = await faceapi.resizeResults(detections, displaySize)
+//             canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
+//             await faceapi.draw.drawDetections(canvas, resizedDetections)
+//             await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+//             }, 100)
+// });
 
-checkForm.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const formData = new FormData(checkForm);
-    console.log(formData.values())
-    fetch('/check',{
-        method:'post',
-        body: formData,
-        headers:{
-            'Access-Control-Allow-Origin': '*'
-        }
-    }).then((response)=>{
-        return response.text();
-    }).then((text)=>{
-        console.log(text);
-    }).catch((err)=>{
-        console.error(err)
-    })
-})   
+// checkForm.addEventListener('submit', (e)=>{
+//     e.preventDefault();
+//     const formData = new FormData(checkForm);
+//     console.log(formData.values())
+//     fetch('/check',{
+//         method:'post',
+//         body: formData,
+//         headers:{
+//             'Access-Control-Allow-Origin': '*'
+//         }
+//     }).then((response)=>{
+//         return response.text();
+//     }).then((text)=>{
+//         console.log(text);
+//     }).catch((err)=>{
+//         console.error(err)
+//     })
+// })   
 
 
 

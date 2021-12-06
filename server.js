@@ -206,6 +206,9 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
   })  
 });
 
+app.get("/verify-student", secured, (req, res)=>{
+  res.render('verify-student')
+})
 
 
 app.get("/check", secured, (req, res)=>{
