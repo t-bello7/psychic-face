@@ -10,12 +10,11 @@ let video = document.querySelector('#video-cam');
 const registerForm = document.querySelector('.register');
 
 
-
+let facedescriptor
 let image_file
 let image_file_check
 
 let localstream;
-
 const select = (el, all = false) =>{
     el = el.trim()
     if (all){
@@ -128,6 +127,12 @@ video.addEventListener('play', async ()=>{
         faceapi.matchDimensions(canvas, displaySize)
         setInterval(async () => {
             const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+            if (!detections){
+                throw new Error(`no face detected`)
+            }
+            facedescriptor = [detections[0].descriptor]
+            // console.log(facedescriptor)
+           
             const resizedDetections = await faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
             await faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -139,9 +144,9 @@ video.addEventListener('play', async ()=>{
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(registerForm);
-
-    console.log(formData.get('studentImage'))
-
+    console.log(facedescriptor)
+    let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
+    console.log(labeledDescriptor)
     if (formData.get('studentImage').name == '' ){
         formData.set('studentImage', image_file)
     }

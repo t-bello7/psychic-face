@@ -11,11 +11,11 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 - Auth0 for authentications
 - Node Js and Experss for Server
 - Plain Html and Cs
-- MongoDB for database services
+- My SQL for database services
 
 ## User Stories
 
-1. As a user, I want to eb able to login and logout
+1. As a user, I want to be able to login and logout
 
 ## Planning Stories
 
