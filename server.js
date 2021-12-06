@@ -37,7 +37,7 @@ const con = mysql.createConnection({
 const createStudentDb = async() =>{ 
  await con.connect((err) => {
     if(err) throw err;
-    let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor VARCHAR(255),PRIMARY KEY(id))";
+    let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor json DEFAULT NULL ,PRIMARY KEY(id))";
     con.query(sql, function(err, result){
       if (err) throw err;
     })
@@ -197,7 +197,7 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
       first_name : req.body.firstName,
       last_name : req.body.lastName,
       student_image: image,
-      face_descriptor:req.body.face_descriptor
+      image_descriptor:req.body.face_descriptor
     };
 
   let sql = 'INSERT INTO students SET ?';
