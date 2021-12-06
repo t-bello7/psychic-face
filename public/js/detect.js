@@ -1,6 +1,7 @@
 const threshold = 0.6
 let pictureButtonCheck = document.querySelector('#take-picture-check');
 let cameraButtonCheck = document.querySelector('#start-camera-check');
+let closeButtonCheck = document.querySelector('#close-camera-check');
 let streaming = false;
 let width = 320;
 let height = 0;
@@ -59,6 +60,16 @@ videoCheck.addEventListener('play',()=>{
             await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
             }, 100)
 });
+closeButtonCheck.addEventListener('click', function(){
+    videoCheck.pause();
+    videoCheck.currentTime = 0;
+    videoCheck.srcObject = null;
+    const tracks = localstream.getTracks()
+    tracks.forEach(function(track){
+        track.stop();
+    })
+    localstream = '';
+})
 
 submitButton.addEventListener('click',(e)=>{
     fetch('/check')
