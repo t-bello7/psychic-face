@@ -21,7 +21,7 @@ block layout-content
                                         th(scope="col") #
                                         th(scope="col") First Name
                                         th(scope="col") Last Name 
-                                        th(scope="col") Image Link 
+                                        th(scope="col") Image
                                     each item in items                                  
                                         tbody 
                                             tr 
@@ -29,6 +29,7 @@ block layout-content
                                                     //- a(href="#")
                                                 td= item.first_name 
                                                 td= item.last_name
-                                                td= item.student_image
+                                                td
+                                                    img(src=`${item.student_image}`).student-img
         
 

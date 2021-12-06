@@ -10,6 +10,10 @@
 .mg-1 {
   margin-bottom: 6rem 0;
 }
+.student-img {
+  width: 100px;
+  height: 100px;
+}
 .index {
   height: 100vh;
   color: white;
