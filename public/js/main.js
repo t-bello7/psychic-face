@@ -151,6 +151,7 @@ registerForm.addEventListener('submit', (e) => {
         formData.set('studentImage', image_file)
     }
 
+    console.log(formData);
     fetch('/register',{
         method: 'post',
         body: formData,

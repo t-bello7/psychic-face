@@ -1,10 +1,13 @@
 const threshold = 0.6
 let pictureButtonCheck = document.querySelector('#take-picture-check');
 let cameraButtonCheck = document.querySelector('#start-camera-check');
-
+let streaming = false;
+let width = 320;
+let height = 0;
 let videoCheck = document.querySelector('#video-check');
 let canvasCheck  = document.querySelector('#canvas-check');
 const checkForm = document.querySelector('.check');
+let submitButton = document.querySelector('#submit-button')
 let video = document.querySelector('#video-cam');
 let image_file_check
 
@@ -17,15 +20,18 @@ cameraButtonCheck.addEventListener('click', async function(){
     await faceapi.loadFaceRecognitionModel('/models')
     navigator.mediaDevices.getUserMedia({ video: true, audio: false})
     .then(function(stream){
-    videoCheck.srcObject = stream;
+        videoCheck.srcObject = stream;
      });
  });
  
- pictureButtonCheck.addEventListener('click', function(){
-     canvasCheck.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-     let image_data_url = canvas.toDataURL('image/jpeg');
-     image_file_check = dataUrlToFile(image_data_url, 'imagecheck.png');
+ submitButton.addEventListener('click',()=>{
+     console.log('hey');
  })
+//  pictureButtonCheck.addEventListener('click', function(){
+//      canvasCheck.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+//      let image_data_url = canvas.toDataURL('image/jpeg');
+//      image_file_check = dataUrlToFile(image_data_url, 'imagecheck.png');
+//  })
  
 
 videoCheck.addEventListener('play',()=>{
@@ -60,22 +66,22 @@ videoCheck.addEventListener('play',()=>{
             }, 100)
 });
 
-checkForm.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const formData = new FormData(checkForm);
-    console.log(formData.values())
-    fetch('/check',{
-        method:'post',
-        body: formData,
-        headers:{
-            'Access-Control-Allow-Origin': '*'
-        }
-    }).then((response)=>{
-        return response.text();
-    }).then((text)=>{
-        console.log(text);
-    }).catch((err)=>{
-        console.error(err)
-    })
-})   
+// checkForm.addEventListener('submit', (e)=>{
+//     e.preventDefault();
+//     const formData = new FormData(checkForm);
+//     console.log(formData.values())
+//     fetch('/check',{
+//         method:'post',
+//         body: formData,
+//         headers:{
+//             'Access-Control-Allow-Origin': '*'
+//         }
+//     }).then((response)=>{
+//         return response.text();
+//     }).then((text)=>{
+//         console.log(text);
+//     }).catch((err)=>{
+//         console.error(err)
+//     })
+// })   
 
