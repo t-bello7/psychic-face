@@ -13,8 +13,8 @@ const registerForm = document.querySelector('.register');
 let facedescriptor
 let image_file
 let image_file_check
-
 let localstream;
+
 const select = (el, all = false) =>{
     el = el.trim()
     if (all){
@@ -150,7 +150,7 @@ registerForm.addEventListener('submit', (e) => {
     if (formData.get('studentImage').name == '' ){
         formData.set('studentImage', image_file)
     }
-
+    formData.append('face_descriptor', labeledDescriptor)
     console.log(formData);
     fetch('/register',{
         method: 'post',

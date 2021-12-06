@@ -72,6 +72,10 @@
   cursor: pointer;
   margin: 0 2rem;
 }
+#start-camera-check {
+  cursor: pointer;
+  margin: 0 2rem;
+}
 #close-camera {
   cursor: pointer;
 }

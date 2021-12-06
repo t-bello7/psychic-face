@@ -10,8 +10,7 @@ const checkForm = document.querySelector('.check');
 let submitButton = document.querySelector('#submit-button')
 let video = document.querySelector('#video-cam');
 let image_file_check
-
-/*Check form */
+let global_detection 
 
 cameraButtonCheck.addEventListener('click', async function(){
     await faceapi.loadTinyFaceDetectorModel('/models')
@@ -24,9 +23,7 @@ cameraButtonCheck.addEventListener('click', async function(){
      });
  });
  
- submitButton.addEventListener('click',()=>{
-     console.log('hey');
- })
+
 //  pictureButtonCheck.addEventListener('click', function(){
 //      canvasCheck.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 //      let image_data_url = canvas.toDataURL('image/jpeg');
@@ -46,19 +43,16 @@ videoCheck.addEventListener('play',()=>{
         videoCheck.setAttribute('height', height);
         }
         const canvas = faceapi.createCanvasFromMedia(videoCheck)
-        console.log(canvas)
         const wrapDiv = document.querySelector('.wrap-check');
-        
         wrapDiv.append(canvas);
-    
         const displaySize = {
             width: videoCheck.width,
             height: videoCheck.height
         }
         faceapi.matchDimensions(canvas, displaySize)
-    
         setInterval(async () => {
             const detections = await faceapi.detectAllFaces(videoCheck, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+            global_detection = detections
             const resizedDetections = await faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
             await faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -66,6 +60,18 @@ videoCheck.addEventListener('play',()=>{
             }, 100)
 });
 
+submitButton.addEventListener('click',(e)=>{
+    fetch('/check')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        data.forEach((bestMatch, i) =>{
+            const box = detections[i].detection.box
+            const text = bestMatch.toString()
+            
+        })
+    })
+})
 // checkForm.addEventListener('submit', (e)=>{
 //     e.preventDefault();
 //     const formData = new FormData(checkForm);

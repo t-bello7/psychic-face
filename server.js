@@ -197,6 +197,7 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
       first_name : req.body.firstName,
       last_name : req.body.lastName,
       student_image: image,
+      face_descriptor:req.body.face_descriptor
     };
 
   let sql = 'INSERT INTO students SET ?';
@@ -212,12 +213,11 @@ app.get("/verify-student", secured, (req, res)=>{
 
 
 app.get("/check", secured, (req, res)=>{
-
   let sql = 'SELECT student_image FROM students';
   con.query(sql, (err, result)=>{
     if (err) throw err;
     console.log(result)
-    res.redirect('/')
+    res.json(result)
   })
 });
 
