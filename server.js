@@ -199,12 +199,11 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
       student_image: image,
       image_descriptor: '{}'
     };
-
   let sql = 'INSERT INTO students SET ?';
   con.query(sql, obj, (err) =>{
     if(err) throw err;
-    res.redirect('/')
   })  
+  res.redirect('/home')
 });
 
 app.get("/verify-student", secured, (req, res)=>{

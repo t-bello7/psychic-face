@@ -4,13 +4,12 @@ block layout-content
         h1.card-title Verify A Student 
             div 
                 //- form(action="" class="check" method="POST" enctype="multipart/form-data")
-                div.form-label Upload Image 
-                    input(type="file" name="checkImage" id="check_image").form-select
-                label.form-label Or Take A Picture 
+                //- div.form-label Upload Image 
+                //-     input(type="file" name="checkImage" id="check_image").form-select
+                label.form-label Take A Picture 
                 span#start-camera-check.bi.bi-camera 
                 div.wrap-check     
                     video(src="" autoplay="true" width="320" height="240")#video-check
                 span#close-camera-check.bi.bi-x-square 
-                span#take-picture-check.bi.bi-camera 
                 canvas(width="320" height="240")
                 div.verify-button.btn.btn-primary#submit-button Verify 
