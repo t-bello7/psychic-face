@@ -2,7 +2,13 @@ extends layout
 
 block layout-content 
     main#main.main
-        h1.card-title Register A Student 
+        .pagetitle 
+            h1 Add Student
+            nav 
+                ol.breadcrumb 
+                    li.breadcrumb-item 
+                        a(href="/home") Home 
+                    li.breadcrumb-item.active Add Student
             div 
                 form(action="" class="register" method="POST" enctype="multipart/form-data").row.g-3
                     div.col-md-6
