@@ -142,8 +142,8 @@ video.addEventListener('play', async ()=>{
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(registerForm);
-    // let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
-    // console.log(labeledDescriptor)
+    let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
+    console.log(labeledDescriptor)
     // let labeledDescriptor2 = labeledDescriptor.toJSON()
     // console.log(labeledDescriptor2)
     
