@@ -37,7 +37,7 @@ const con = mysql.createConnection({
 const createStudentDb = async() =>{ 
  await con.connect((err) => {
     if(err) throw err;
-    let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor json DEFAULT NULL ,PRIMARY KEY(id))";
+    let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor JSON DEFAULT NULL, PRIMARY KEY(id))";
     con.query(sql, function(err, result){
       if (err) throw err;
     })
@@ -193,10 +193,6 @@ app.get("/profile", secured, (req, res, next) => {
 
 app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
   let image = path.join('/uploads/' + req.file.filename)
-  console.log(req.body.faceDescriptor)
-  console.log(JSON.parse(req.body.faceDescriptor))
-  console.log(JSON.parse(req.body.faceDescriptor).fromJSON())
-
   let obj = {
       first_name : req.body.firstName,
       last_name : req.body.lastName,

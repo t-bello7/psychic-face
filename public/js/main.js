@@ -143,22 +143,12 @@ registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(registerForm);
     let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
+    labeledDescriptor = labeledDescriptor.toJSON()
+    labeledDescriptor = JSON.stringify(labeledDescriptor)
     console.log(labeledDescriptor)
-    // let labeledDescriptor2 = labeledDescriptor.toJSON()
-    // console.log(labeledDescriptor2)
-    
-
-    // const text = JSON.stringify(labeledDescriptor)
-    // console.log(text)
-    // const text2 = JSON.parse(text)
-    // console.log(text2)
-    // const face = new faceapi.LabeledFaceDescriptors.fromJSON(data)
-    // console.log(face)
-
     if (formData.get('studentImage').name == '' ){
         formData.set('studentImage', image_file)
     }
-    labeledDescriptor = JSON.stringify(labeledDescriptor)
     formData.set('faceDescriptor', labeledDescriptor)
     fetch('/register',{
         method: 'post',

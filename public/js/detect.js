@@ -5,13 +5,17 @@ let closeButtonCheck = document.querySelector('#close-camera-check');
 let streaming = false;
 let width = 320;
 let height = 0;
+let output = document.querySelector('.verify-output')
+let image;
 let videoCheck = document.querySelector('#video-check');
 let canvasCheck  = document.querySelector('#canvas-check');
 const checkForm = document.querySelector('.check');
 let submitButton = document.querySelector('#submit-button')
 let video = document.querySelector('#video-cam');
 let image_file_check
-let global_detection 
+let globalDetection
+
+let modalCloseButton = document.querySelector('#close-modal');
 
 cameraButtonCheck.addEventListener('click', async function(){
     await faceapi.loadTinyFaceDetectorModel('/models')
@@ -53,7 +57,6 @@ videoCheck.addEventListener('play',()=>{
         faceapi.matchDimensions(canvas, displaySize)
         setInterval(async () => {
             const detections = await faceapi.detectAllFaces(videoCheck, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
-            global_detection = detections
             const resizedDetections = await faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
             await faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -71,39 +74,40 @@ closeButtonCheck.addEventListener('click', function(){
     localstream = '';
 })
 
+pictureButtonCheck.addEventListener('click', async function(){
+    canvasCheck.getContext('2d').drawImage(videoCheck, 0, 0, canvasCheck.width, canvasCheck.height);
+    image = canvasCheck
+    globalDetection = await faceapi.detectAllFaces(image, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+    
+})
 submitButton.addEventListener('click',(e)=>{
     fetch('/check')
     .then(response => response.json())
-    .then(data => {
-        data.map( label => {
-            // JSON.parse(label)
-            console.log(label.image_descriptor)
-        }
-        )
-        console.log(data)
+    .then(data => {        
+        // let descriptor_obj 
+        let floatArray
+        let labeledDescriptor 
+        labeledDescriptor =  data.map( item => {
+            floatArray = new Float32Array(item.image_descriptor.descriptors[0])
+            floatArray = [floatArray]
+            return new faceapi.LabeledFaceDescriptors(item.image_descriptor.label, floatArray)
+        })
 
-        const faceMatcher = new faceapi.FaceMatcher(data, threshold)
-        const results = data.map(fd => faceMatcher.findBestMatch(fd.descriptor))
-        console.log(results)
+        console.log(labeledDescriptor)
+        // reference
+        const faceMatcher = new faceapi.FaceMatcher(labeledDescriptor, threshold)
+        console.log(faceMatcher)
 
+        // recognize
+        const results = globalDetection.map(fd => faceMatcher.findBestMatch(fd.descriptor))
+        output.innerHTML += `
+        Yes this is , ${results[0].label}
+        `
+        console.log(results[0])
     })
 })
-// checkForm.addEventListener('submit', (e)=>{
-//     e.preventDefault();
-//     const formData = new FormData(checkForm);
-//     console.log(formData.values())
-//     fetch('/check',{
-//         method:'post',
-//         body: formData,
-//         headers:{
-//             'Access-Control-Allow-Origin': '*'
-//         }
-//     }).then((response)=>{
-//         return response.text();
-//     }).then((text)=>{
-//         console.log(text);
-//     }).catch((err)=>{
-//         console.error(err)
-//     })
-// })   
+
+modalCloseButton.addEventListener('click', ()=>{
+    output.innerHTML = "";
+})
 
