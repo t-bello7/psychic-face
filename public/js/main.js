@@ -145,7 +145,6 @@ registerForm.addEventListener('submit', (e) => {
     let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
     labeledDescriptor = labeledDescriptor.toJSON()
     labeledDescriptor = JSON.stringify(labeledDescriptor)
-    console.log(labeledDescriptor)
     if (formData.get('studentImage').name == '' ){
         formData.set('studentImage', image_file)
     }
