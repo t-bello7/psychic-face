@@ -193,17 +193,22 @@ app.get("/profile", secured, (req, res, next) => {
 
 app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
   let image = path.join('/uploads/' + req.file.filename)
+  console.log(req.body.faceDescriptor)
+  console.log(JSON.parse(req.body.faceDescriptor))
+  console.log(JSON.parse(req.body.faceDescriptor).fromJSON())
+
   let obj = {
       first_name : req.body.firstName,
       last_name : req.body.lastName,
       student_image: image,
-      image_descriptor: '{}'
+      image_descriptor: req.body.faceDescriptor,
     };
   let sql = 'INSERT INTO students SET ?';
-  con.query(sql, obj, (err) =>{
+  let query = con.query(sql, obj, (err,result) => {
     if(err) throw err;
+    res.redirect('/all-students');
   })  
-  res.redirect('/home')
+ 
 });
 
 app.get("/verify-student", secured, (req, res)=>{
@@ -212,10 +217,9 @@ app.get("/verify-student", secured, (req, res)=>{
 
 
 app.get("/check", secured, (req, res)=>{
-  let sql = 'SELECT student_image FROM students';
+  let sql = 'SELECT image_descriptor FROM students';
   con.query(sql, (err, result)=>{
     if (err) throw err;
-    console.log(result)
     res.json(result)
   })
 });

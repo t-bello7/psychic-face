@@ -75,12 +75,17 @@ submitButton.addEventListener('click',(e)=>{
     fetch('/check')
     .then(response => response.json())
     .then(data => {
+        data.map( label => {
+            // JSON.parse(label)
+            console.log(label.image_descriptor)
+        }
+        )
         console.log(data)
-        data.forEach((bestMatch, i) =>{
-            const box = detections[i].detection.box
-            const text = bestMatch.toString()
-            
-        })
+
+        const faceMatcher = new faceapi.FaceMatcher(data, threshold)
+        const results = data.map(fd => faceMatcher.findBestMatch(fd.descriptor))
+        console.log(results)
+
     })
 })
 // checkForm.addEventListener('submit', (e)=>{

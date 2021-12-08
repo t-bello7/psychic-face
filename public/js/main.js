@@ -1,4 +1,3 @@
-// import {accessCamera,detectFace} from './detect';
 let streaming = false;
 let width = 320;
 let height = 0;
@@ -127,12 +126,11 @@ video.addEventListener('play', async ()=>{
         faceapi.matchDimensions(canvas, displaySize)
         setInterval(async () => {
             const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
-            if (!detections){
+            if (!detections[0]){
                 throw new Error(`no face detected`)
             }
-            facedescriptor = [detections[0].descriptor]
-            // console.log(facedescriptor)
-           
+
+        facedescriptor = [detections[0].descriptor]          
             const resizedDetections = await faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
             await faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -144,24 +142,30 @@ video.addEventListener('play', async ()=>{
 registerForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(registerForm);
-    console.log(facedescriptor)
-    let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
-    console.log(labeledDescriptor)
+    // let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
+    // console.log(labeledDescriptor)
+    // let labeledDescriptor2 = labeledDescriptor.toJSON()
+    // console.log(labeledDescriptor2)
+    
+
+    // const text = JSON.stringify(labeledDescriptor)
+    // console.log(text)
+    // const text2 = JSON.parse(text)
+    // console.log(text2)
+    // const face = new faceapi.LabeledFaceDescriptors.fromJSON(data)
+    // console.log(face)
+
     if (formData.get('studentImage').name == '' ){
         formData.set('studentImage', image_file)
     }
-    formData.append('face_descriptor', labeledDescriptor)
-    console.log(formData);
+    labeledDescriptor = JSON.stringify(labeledDescriptor)
+    formData.set('faceDescriptor', labeledDescriptor)
     fetch('/register',{
         method: 'post',
         body: formData,
         headers:{
             'Access-Control-Allow-Origin': '*'
         }
-    }).then ((response)=>{
-        return response.text();
-    }).then((text)=>{
-        // console.log(text);
     }).catch ((err)=>
     {
         console.error(err)

@@ -17,12 +17,12 @@ block layout-content
                     div.col-md-6
                         label(for="lastName").form-label Last Name
                         input(type="text" id="last_name" name="lastName" placeholder="Last Name").form-control
-                    
+                    input(hidden name="faceDescriptor")
                     div.flex
                         div
-                            label(for="studentImage").form-label Upload Image   
-                            input(type="file" name="studentImage" value="" id="student_image").form-select
-                        label().form-label Or Take A Picture
+                            //- label(for="studentImage").form-label Upload Image   
+                            input(type="file" name="studentImage" value="" id="student_image" hidden).form-select
+                        label().form-label Take A Picture
                         span#start-camera.bi.bi-camera
                         div.wrap
                             video(src="" autoplay="true" width="320" height="240")#video-cam
