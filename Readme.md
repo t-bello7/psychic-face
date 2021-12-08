@@ -4,7 +4,7 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 
 ## Important Links and Resources
 
--
+- <https://developer.okta.com/blog/2019/03/11/node-sql-server>
 
 ## Technologies Used
 
@@ -13,9 +13,9 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 - Plain Html and Cs
 - My SQL for database services
 
-## User Stories
+<!-- ## User Stories
 
-1. As a user, I want to be able to login and logout
+1. As a user, I want to be able to login and logout -->
 
 ## Planning Stories
 

@@ -155,9 +155,12 @@ registerForm.addEventListener('submit', (e) => {
         headers:{
             'Access-Control-Allow-Origin': '*'
         }
+    }).then( ()=>{
+        window.location.assign('/all-students');
     }).catch ((err)=>
     {
         console.error(err)
+
     })
 })
 
