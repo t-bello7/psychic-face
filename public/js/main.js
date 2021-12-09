@@ -68,21 +68,20 @@ function dataUrlToFile(dataurl ,filename){
 
 
 cameraButton.addEventListener('click', async () => {
+    navigator.mediaDevices.getUserMedia({ video: true , audio:false})
+    .then(function (stream) {
+    video.srcObject = stream;
+    localstream = stream;
+    // video.play();    
+    })
+    .catch(function (error) {
+    console.log("Something went wrong!");
+    console.error(error)
+});
     await faceapi.loadTinyFaceDetectorModel('/models')
     await faceapi.loadSsdMobilenetv1Model('/models')
     await faceapi.loadFaceLandmarkModel('/models')
     await faceapi.loadFaceRecognitionModel('/models')
-
-        navigator.mediaDevices.getUserMedia({ video: true , audio:false})
-        .then(function (stream) {
-        video.srcObject = stream;
-        localstream = stream;
-        // video.play();    
-        })
-        .catch(function (error) {
-        console.log("Something went wrong!");
-        console.error(error)
-    });
 });
     
 

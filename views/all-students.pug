@@ -2,6 +2,12 @@ extends layout
 
 block layout-content
     main#main.main
+        nav 
+            ol.breadcrumb 
+                li.breadcrumb-item 
+                    a(href="/home") Home 
+                li.breadcrumb-item.active All Students
+            
         .col-12 
             .card.recent-sales 
                 .filter

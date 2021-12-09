@@ -74,6 +74,8 @@
 #start-camera {
   cursor: pointer;
   margin: 0 2rem;
+  width: 100px;
+  height: 100px;
 }
 #start-camera-check {
   cursor: pointer;
