@@ -4,6 +4,11 @@
   margin: 0 auto;
   padding: 0 40px;
 }
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .font-1 {
   font-weight: 600;
 }
@@ -51,43 +56,30 @@
 .homeView {
   display: flex;
 }
-.wrap {
-  position: relative;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-}
-.wrap > * {
-  grid-column: 1;
-  grid-row: 1;
-}
+.wrap,
 .wrap-check {
   position: relative;
   display: grid;
   justify-content: center;
   align-items: center;
 }
+.wrap > *,
 .wrap-check > * {
   grid-column: 1;
   grid-row: 1;
 }
-#start-camera {
-  cursor: pointer;
-  margin: 0 2rem;
-  width: 100px;
-  height: 100px;
-}
-#start-camera-check {
-  cursor: pointer;
-  margin: 0 2rem;
-}
+
+#start-camera-check,
+#close-camera-check,
+#start-camera,
+#take-picture-check,
 #close-camera {
   cursor: pointer;
+  margin: 0 2rem;
 }
+
 .video {
-  position: absolute;
-  top: 0;
-  left: 0;
+  margin: 0 2rem;
 }
 
 /*mobile responsivenes*/
@@ -102,8 +94,10 @@
     left: 0% !important;
     width: 400px !important;
   }
+  .flex {
+    flex-direction: column;
+  }
 }
-*/
 
 /* Bootstrap */
 /**
@@ -515,6 +509,7 @@ h6 {
 .header .search-form {
   width: 100%;
 }
+/* position: relative; */
 .header .search-form input {
   border: 0;
   font-size: 14px;

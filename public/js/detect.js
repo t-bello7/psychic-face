@@ -18,14 +18,14 @@ let globalDetection
 let modalCloseButton = document.querySelector('#close-modal');
 
 cameraButtonCheck.addEventListener('click', async function(){
-    await faceapi.loadTinyFaceDetectorModel('/models')
-    await faceapi.loadSsdMobilenetv1Model('/models')
-    await faceapi.loadFaceLandmarkModel('/models')
-    await faceapi.loadFaceRecognitionModel('/models')
     navigator.mediaDevices.getUserMedia({ video: true, audio: false})
     .then(function(stream){
         videoCheck.srcObject = stream;
      });
+    await faceapi.loadTinyFaceDetectorModel('/models')
+    await faceapi.loadSsdMobilenetv1Model('/models')
+    await faceapi.loadFaceLandmarkModel('/models')
+    await faceapi.loadFaceRecognitionModel('/models')
  });
  
 

@@ -1,6 +1,11 @@
 extends layout
 block layout-content
     main#main.main 
+        nav 
+            ol.breadcrumb 
+                li.breadcrumb-item 
+                    a(href="/home") Home 
+                li.breadcrumb-item.active Dashboard
             .card 
                 .card-body
                     h1.card-title Verify A Student 
@@ -8,13 +13,15 @@ block layout-content
                     //- form(action="" class="check" method="POST" enctype="multipart/form-data")
                     //- div.form-label Upload Image 
                     //-     input(type="file" name="checkImage" id="check_image").form-select
-                    label.form-label Take A Picture 
-                    span#start-camera-check.bi.bi-camera 
-                    div.wrap-check     
-                        video(src="" autoplay="true" width="320" height="240")#video-check
-                    span#close-camera-check.bi.bi-x-square 
-                    span#take-picture-check.bi.bi-camera
-                    canvas(width="320" height="240")#canvas-check
+                    div.flex
+                        div.video
+                            label.form-label Take A Picture 
+                            i#start-camera-check.bi.bi-webcam
+                            div.wrap-check     
+                                video(src="" autoplay="true" width="320" height="240")#video-check
+                            i#close-camera-check.bi.bi-x-square 
+                            i#take-picture-check.bi.bi-camera
+                        canvas(width="320" height="240")#canvas-check
 
                     button(data-bs-toggle="modal" data-bs-target="#verticalycentered").verify-button.btn.btn-primary#submit-button Verify 
                     .modal.fade#verticalycentered(tabindex="-1")
