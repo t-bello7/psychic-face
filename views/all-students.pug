@@ -28,11 +28,10 @@ block layout-content
                                         th(scope="col") First Name
                                         th(scope="col") Last Name 
                                         th(scope="col") Image
-                                    each item in items                                  
+                                    each item,i  in items                                  
                                         tbody 
                                             tr 
-                                                //- th(scope="row")
-                                                    //- a(href="#")
+                                                td=i
                                                 td= item.first_name 
                                                 td= item.last_name
                                                 td

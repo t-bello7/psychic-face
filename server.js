@@ -34,7 +34,7 @@ const con = mysql.createConnection({
   queueLimit: 0,
   waitForConnections: true
 })
-const createStudentDb = async() =>{ 
+const createStudentDb = async () => { 
  await con.connect((err) => {
     if(err) throw err;
     let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor JSON DEFAULT NULL, PRIMARY KEY(id))";
