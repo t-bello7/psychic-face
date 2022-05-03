@@ -1,10 +1,12 @@
 ## Class Portal
 
-Hey there ! Welcome to my first paid gig after starting a software development journey currently ravmping up on being a CSS Guru. The user interface is priority one for me. After going through hasnode bootcamp found out about auth0 for the first.
+Hey there ! Welcome to my first paid gig after starting a software development journey currently ravmping up on being a CSS Guru. The user interface might not be great but try looking past and try the application main funtionality out which is a facial registration and recognition system. After going through hasnode bootcamp found out about auth0 for the first time. Utlized Auth0 for the authentication of psychic-face.
 
 ## Important Links and Resources
 
-- <https://developer.okta.com/blog/2019/03/11/node-sql-server>
+- https://www.youtube.com/watch?v=QQwo4E_B0y8>
+- https://auth0.com/blog/create-a-simple-and-secure-node-express-app
+- https://developer.okta.com/blog/2019/03/11/node-sql-server
 
 ## Technologies Used
 
@@ -17,8 +19,9 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 
 1. As a user, I want to be able to login and logout -->
 
-## Planning Stories
-
+<!-- ## Planning Stories
+ -->
+ 
 ## Problems I ran into (Front-end)
 
 - Making the site reponsive -
@@ -28,15 +31,11 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 
 - Have been working with mostly relational database has my backend database so it took me a while to get familiar with a document database.
 
-## Resources used
-- Auth authentication - <https://www.youtube.com/watch?v=QQwo4E_B0y8>
-
-<https://auth0.com/blog/create-a-simple-and-secure-node-express-app/>
-
 ## Future Update
 
 1. Improve on querying the database without a student ID , Just a facial recognition.
 2. Improve on makeing the student ID unique and user-friendly
 
-## Original Wireframe Sketch
+<!-- ## Original Wireframe Sketch
 
+ -->
