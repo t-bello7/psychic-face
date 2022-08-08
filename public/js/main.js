@@ -54,11 +54,9 @@ function dataUrlToFile(dataurl ,filename){
     bstr = atob(arr[1]), 
     n = bstr.length, 
     u8arr = new Uint8Array(n);
-    
     while(n--){
     u8arr[n] = bstr.charCodeAt(n);
     }
-
     return new File([u8arr], filename, {type:mime});
 } 
 
@@ -68,10 +66,8 @@ if (cameraButton){
         .then(function (stream) {
         video.srcObject = stream;
         localstream = stream;
-        // video.play();    
         })
         .catch(function (error) {
-        console.log("Something went wrong!");
         console.error(error)
     });
         await faceapi.loadTinyFaceDetectorModel('/models')
@@ -106,8 +102,7 @@ if (closeButton){
 
 
 
-if (video){
-    
+if (video){  
 video.addEventListener('play', async ()=>{
     if (!streaming){
         height = video.videoHeight / (video.videoWidth / width);
@@ -128,19 +123,19 @@ video.addEventListener('play', async ()=>{
         }
         faceapi.matchDimensions(canvas, displaySize)
         setInterval(async () => {
+            try{
             const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
-            if (!detections[0]){
-                throw new Error(`no face detected`)
-            }
-
-        facedescriptor = [detections[0].descriptor]          
+            facedescriptor = [detections[0].descriptor]          
             const resizedDetections = await faceapi.resizeResults(detections, displaySize)
             canvas.getContext('2d').clearRect(0,0,canvas.width, canvas.height)
             await faceapi.draw.drawDetections(canvas, resizedDetections)
             await faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-        }, 100)  
-
-})
+            } catch (error){
+                console.log(error)
+            }
+          
+        }, 100)
+    })
 }
 if( registerForm){
     registerForm.addEventListener('submit', (e) => {

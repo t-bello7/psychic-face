@@ -41,7 +41,7 @@
 }
 
 .NavButton {
-  background-color: teal;
+  background-color: #008080;
   text-align: center;
   color: white;
   padding: 1rem 3rem 1rem 3rem;
@@ -54,7 +54,7 @@
 
 .NavButton:hover {
   background-color: white;
-  color: teal;
+  color: #008080;
 }
 .wrap,
 .wrap-check {
@@ -62,6 +62,7 @@
   display: grid;
   justify-content: center;
   align-items: center;
+  margin-block: 2rem;
 }
 .wrap > *,
 .wrap-check > * {
@@ -116,14 +117,9 @@
 }
 
 /*mobile responsivenes*/
-@media only screen and (max-width: 1400px) {
-  .modal {
+/* @media only screen and (max-width: 1400px) {
  
-  }
-  .flex {
-    flex-direction: column;
-  }
-}
+} */
 
 /* Bootstrap */
 /**
@@ -147,12 +143,12 @@ body {
 }
 
 a {
-  color: #4154f1;
+  color: #008080;
   text-decoration: none;
 }
 
 a:hover {
-  color: #717ff5;
+  color:#008010;
   text-decoration: none;
 }
 
@@ -189,7 +185,7 @@ h6 {
   font-size: 24px;
   margin-bottom: 0;
   font-weight: 600;
-  color: #012970;
+  color: #008080;
 }
 
 /*--------------------------------------------------------------
@@ -202,7 +198,7 @@ h6 {
   right: 15px;
   bottom: 15px;
   z-index: 99999;
-  background: #4154f1;
+  background:#008080;
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -214,7 +210,7 @@ h6 {
   line-height: 0;
 }
 .back-to-top:hover {
-  background: #6776f4;
+  background: #008010;
   color: #fff;
 }
 .back-to-top.active {
@@ -367,7 +363,7 @@ h6 {
   padding: 20px 0 15px 0;
   font-size: 18px;
   font-weight: 500;
-  color: #012970;
+  color: #008010;
   font-family: "Poppins", sans-serif;
 }
 .card-title span {
@@ -410,7 +406,7 @@ h6 {
   box-shadow: none;
 }
 .accordion-button:not(.collapsed) {
-  color: #012970;
+  color: #008010;
   background-color: #f6f9ff;
 }
 
@@ -421,7 +417,7 @@ h6 {
 }
 .accordion-flush .accordion-button:not(.collapsed) {
   box-shadow: none;
-  color: #4154f1;
+  color:#008080;
 }
 .accordion-flush .accordion-body {
   padding: 0 0 15px 0;
@@ -462,12 +458,12 @@ h6 {
 }
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
-  color: #4154f1;
+  color:#008080;
 }
 .nav-tabs-bordered .nav-link.active {
   background-color: #fff;
-  color: #4154f1;
-  border-bottom: 2px solid #4154f1;
+  color:#008080;
+  border-bottom: 2px solid#008080;
 }
 
 /*--------------------------------------------------------------
@@ -488,7 +484,7 @@ h6 {
 .logo span {
   font-size: 26px;
   font-weight: 700;
-  color: #012970;
+  color: #008010;
   font-family: "Nunito", sans-serif;
 }
 
@@ -506,7 +502,7 @@ h6 {
   font-size: 32px;
   padding-left: 10px;
   cursor: pointer;
-  color: #012970;
+  color: #008010;
 }
 .header .search-bar {
   min-width: 360px;
@@ -539,7 +535,7 @@ h6 {
 .header .search-form input {
   border: 0;
   font-size: 14px;
-  color: #012970;
+  color: #008010;
   border: 1px solid rgba(1, 41, 112, 0.2);
   padding: 7px 38px 7px 8px;
   border-radius: 3px;
@@ -559,7 +555,7 @@ h6 {
   background: none;
 }
 .header .search-form button i {
-  color: #012970;
+  color: #008010;
 }
 
 /*--------------------------------------------------------------
@@ -574,10 +570,10 @@ h6 {
 }
 .header-nav .nav-icon {
   font-size: 20px;
-  color: #012970;
+  color: #008010;
 }
 .header-nav .nav-profile {
-  color: #012970;
+  color: #008010;
 }
 .header-nav .nav-profile img {
   max-height: 36px;
@@ -746,7 +742,7 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color:#008080;
   transition: 0.3;
   background: #f6f9ff;
   padding: 10px 15px;
@@ -755,21 +751,21 @@ h6 {
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color:#008080;
 }
 .sidebar-nav .nav-link.collapsed {
-  color: #012970;
+  color: #008010;
   background: #fff;
 }
 .sidebar-nav .nav-link.collapsed i {
   color: #899bbd;
 }
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
+  color:#008080;
   background: #f6f9ff;
 }
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color:#008080;
 }
 .sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
@@ -788,7 +784,7 @@ h6 {
   align-items: center;
   font-size: 14px;
   font-weight: 600;
-  color: #012970;
+  color: #008010;
   transition: 0.3;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
@@ -801,10 +797,10 @@ h6 {
 }
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-  color: #4154f1;
+  color:#008080;
 }
 .sidebar-nav .nav-content a.active i {
-  background-color: #4154f1;
+  background-color:#008080;
 }
 
 /*--------------------------------------------------------------
@@ -825,7 +821,7 @@ h6 {
 }
 .dashboard .filter .icon:hover,
 .dashboard .filter .icon:focus {
-  color: #4154f1;
+  color:#008080;
 }
 .dashboard .filter .dropdown-header {
   padding: 8px 15px;
@@ -849,7 +845,7 @@ h6 {
 }
 .dashboard .info-card h6 {
   font-size: 28px;
-  color: #012970;
+  color: #008010;
   font-weight: 700;
   margin: 0;
   padding: 0;
@@ -863,7 +859,7 @@ h6 {
   flex-grow: 0;
 }
 .dashboard .sales-card .card-icon {
-  color: #4154f1;
+  color:#008080;
   background: #f6f6fe;
 }
 .dashboard .revenue-card .card-icon {
@@ -932,11 +928,11 @@ h6 {
   margin-bottom: 5px;
 }
 .dashboard .news h4 a {
-  color: #012970;
+  color: #008010;
   transition: 0.3s;
 }
 .dashboard .news h4 a:hover {
-  color: #4154f1;
+  color:#008080;
 }
 .dashboard .news p {
   font-size: 14px;
@@ -993,7 +989,7 @@ h6 {
   background-color: #fff;
   border-radius: 0.25rem;
   text-align: center;
-  color: #012970;
+  color: #008010;
   padding: 15px 0;
 }
 .iconslist i {
@@ -1036,14 +1032,14 @@ h6 {
   transition: 0.3s;
 }
 .profile .profile-card .social-links a:hover {
-  color: #012970;
+  color: #008010;
 }
 .profile .profile-overview .row {
   margin-bottom: 20px;
   font-size: 15px;
 }
 .profile .profile-overview .card-title {
-  color: #012970;
+  color: #008010;
 }
 .profile .profile-overview .label {
   font-weight: 600;
@@ -1063,7 +1059,7 @@ h6 {
 .faq .basic h6 {
   font-size: 18px;
   font-weight: 600;
-  color: #4154f1;
+  color:#008080;
 }
 .faq .basic p {
   color: #6980aa;
@@ -1078,11 +1074,11 @@ h6 {
 .contact .info-box i {
   font-size: 38px;
   line-height: 0;
-  color: #4154f1;
+  color:#008080;
 }
 .contact .info-box h3 {
   font-size: 20px;
-  color: #012970;
+  color: #008010;
   font-weight: 700;
   margin: 20px 0 10px 0;
 }
@@ -1138,7 +1134,7 @@ h6 {
 }
 .contact .php-email-form input:focus,
 .contact .php-email-form textarea:focus {
-  border-color: #4154f1;
+  border-color:#008080;
 }
 .contact .php-email-form input {
   padding: 10px 15px;
@@ -1147,7 +1143,7 @@ h6 {
   padding: 12px 15px;
 }
 .contact .php-email-form button[type="submit"] {
-  background: #4154f1;
+  background:#008080;
   border: 0;
   padding: 10px 30px;
   color: #fff;
@@ -1183,14 +1179,14 @@ h6 {
 .error-404 h1 {
   font-size: 180px;
   font-weight: 700;
-  color: #4154f1;
+  color:#008080;
   margin-bottom: 0;
   line-height: 150px;
 }
 .error-404 h2 {
   font-size: 24px;
   font-weight: 700;
-  color: #012970;
+  color: #008010;
   margin-bottom: 30px;
 }
 .error-404 .btn {
@@ -1218,11 +1214,11 @@ h6 {
 }
 .footer .copyright {
   text-align: center;
-  color: #012970;
+  color: #008010;
 }
 .footer .credits {
   padding-top: 5px;
   text-align: center;
   font-size: 13px;
-  color: #012970;
+  color: #008010;
 }

@@ -17,22 +17,19 @@ block layout-content
                         label(for="lastName").form-label Last Name
                         input(type="text" id="last_name" name="lastName" placeholder="Last Name").form-control
                     input(hidden name="faceDescriptor")
-                    div.flex
-                        div
-                            //- label(for="studentImage").form-label Upload Image   
-                            input(type="file" name="studentImage" value="" id="student_image" hidden).form-select
+                    input(type="file" name="studentImage" value="" id="student_image" hidden).form-select
+                    div.d-inline-flex
                         div.video
-                            button#start-camera Start Camera
+                            button#start-camera.NavButton Start Camera
                                 i.bi.bi-webcam
+                            button#close-camera.NavButton Close Camera
+                                i.bi.bi-x-square 
                             div.wrap
                                 video(src="" autoplay="true" width="320" height="240")#video-cam
-                            i#close-camera.bi.bi-x-square 
-                            i#take-picture.bi.bi-camera
-                        
+                            button#take-picture.NavButton Take Picture
+                                i.bi.bi-camera
                         canvas(width="320" height="240")#canvas
-
-                        
-                    input(type="submit", value="Submit" class="btn btn-primary")
+                    input(type="submit", value="Register Student" class="btn btn-primary")
     script(src="js/face-api.min.js" type="module")
         //- script(src="js/detect.js" type="module")   
     script(src="js/main.js" type="module")
