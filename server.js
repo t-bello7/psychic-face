@@ -6,7 +6,7 @@ const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 const multer = require('multer');
 const authRouter = require("./auth");
-const  cors = require('cors');
+const cors = require('cors');
 const mysql = require('mysql2');
 
 require('dotenv').config();
@@ -65,16 +65,16 @@ createStudentDb();
 
 
 const session = {
-    secret: process.env.SESSION_SECRET,
-    cookie: {},
-    resave: false,
-    saveUninitialized: false
-  };
+  secret: process.env.SESSION_SECRET,
+  cookie: {},
+  resave: false,
+  saveUninitialized: false
+};
 
-  if (app.get("env") === "production") {
-    // Serve secure cookies, requires HTTPS
-    session.cookie.secure = true;
-  }
+if (app.get("env") === "production") {
+  // Serve secure cookies, requires HTTPS
+  session.cookie.secure = true;
+}
 
 // set up a storage engine with multer to store uploaded image file
 let storage = multer.diskStorage({
@@ -96,6 +96,7 @@ let checkFileType = (file, cb) =>{
   (mimetype && extname ) ? cb(null, true) : cb('Error: Images Only !  ')
 
 }
+
 let upload = multer({ 
   storage: storage, 
   fileFilter: (req, file,cb)=>{
@@ -104,25 +105,23 @@ let upload = multer({
   
 });
 
-app.use(express.json());
 
 
 //setting up static files
+passport.use(strategy);
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/uploads',express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "checks")));
 app.use(expressSession(session));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //setting up view's & EJS
 app.set("views", path.join(__dirname, "views"));
-// app.set('view engine','ejs');
 app.set("view engine", "pug");
+app.set('trust proxy', true);
 
-app.set('trust proxy', true)
-
-passport.use(strategy);
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated();
@@ -164,6 +163,7 @@ app.get('/all-students', secured,(req, res) =>{
   let sql = 'SELECT * from students'
   pool.query(sql, (err, result)=>{
     if (err) throw err;
+    console.log(result)
     res.render('all-students', {items:result})
   })
 })
@@ -198,7 +198,7 @@ app.get("/verify-student", secured, (req, res)=>{
 
 app.get("/check", secured, (req, res)=>{
   let sql = 'SELECT image_descriptor FROM students';
-  con.query(sql, (err, result)=>{
+  pool.query(sql, (err, result)=>{
     if (err) throw err;
     res.json(result)
   })
