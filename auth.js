@@ -16,21 +16,7 @@ router.get(
     }
   );
   
-  
-
-// router.get('/', function(req, res){
-//     studentModel.find({}, (err,items)=>{
-//         if (err){
-//             console.log(err);
-//             res.status(500).send("An error occured", err);
-//         }
-//         else {
-//         res.render(req.oidc.isAuthenticated() ? 'home' : 'index', {items:items});
-//         }
-//     })
-// });
-
-router.get("/callback", (req, res, next) => {
+  router.get("/callback", (req, res, next) => {
     passport.authenticate("auth0", (err, user, info) => {
       if (err) {
         return next(err);

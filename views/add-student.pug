@@ -1,5 +1,4 @@
 extends layout
-
 block layout-content 
     main#main.main
         .pagetitle 
@@ -22,10 +21,9 @@ block layout-content
                         div
                             //- label(for="studentImage").form-label Upload Image   
                             input(type="file" name="studentImage" value="" id="student_image" hidden).form-select
-
                         div.video
-                            label().form-label Take A Picture
-                            i#start-camera.bi.bi-webcam
+                            button#start-camera Start Camera
+                                i.bi.bi-webcam
                             div.wrap
                                 video(src="" autoplay="true" width="320" height="240")#video-cam
                             i#close-camera.bi.bi-x-square 

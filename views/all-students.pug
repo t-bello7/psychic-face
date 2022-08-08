@@ -11,14 +11,7 @@ block layout-content
         .col-12 
             .card.recent-sales 
                 .filter
-                //- a.icon(href="#" data-bs-toggle="dropdown")
-                    i.bi.bi-three-dots 
-                //- ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow 
-                    li.dropdown-header.text-start 
-                        h6 Filter 
-                    li
-                        a.dropdown-item(href="#") Today
-
+        
                 .card-body 
                     h5.card-title Students 
                             table.table.table-borderless.datatable 
@@ -32,9 +25,9 @@ block layout-content
                                         tbody 
                                             tr 
                                                 td=i
-                                                td= item.first_name 
-                                                td= item.last_name
+                                                td=item.first_name 
+                                                td=item.last_name
                                                 td
-                                                    img(src=`${item.student_image}`).student-img
+                                                    img(src=`${item.student_image}` alt="student-image")
         
 

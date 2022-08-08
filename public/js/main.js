@@ -1,14 +1,11 @@
-let streaming = false;
-let width = 320;
-let height = 0;
 let pictureButton = document.querySelector('#take-picture');
 let cameraButton = document.querySelector('#start-camera');
 let closeButton = document.querySelector('#close-camera');
-
 let video = document.querySelector('#video-cam');
 const registerForm = document.querySelector('.register');
-
-
+let streaming = false;
+let width = 320;
+let height = 0;
 let facedescriptor
 let image_file
 let image_file_check
@@ -65,45 +62,52 @@ function dataUrlToFile(dataurl ,filename){
     return new File([u8arr], filename, {type:mime});
 } 
 
+if (cameraButton){
+    cameraButton.addEventListener('click', async () => {
+        navigator.mediaDevices.getUserMedia({ video: true , audio:false})
+        .then(function (stream) {
+        video.srcObject = stream;
+        localstream = stream;
+        // video.play();    
+        })
+        .catch(function (error) {
+        console.log("Something went wrong!");
+        console.error(error)
+    });
+        await faceapi.loadTinyFaceDetectorModel('/models')
+        await faceapi.loadSsdMobilenetv1Model('/models')
+        await faceapi.loadFaceLandmarkModel('/models')
+        await faceapi.loadFaceRecognitionModel('/models')
+    });
+        
+}
 
-
-cameraButton.addEventListener('click', async () => {
-    navigator.mediaDevices.getUserMedia({ video: true , audio:false})
-    .then(function (stream) {
-    video.srcObject = stream;
-    localstream = stream;
-    // video.play();    
+if (pictureButton){
+    pictureButton.addEventListener('click', function(){
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        let image_data_url = canvas.toDataURL('image/jpeg');
+        image_file = dataUrlToFile(image_data_url, 'imagetaken.png')
     })
-    .catch(function (error) {
-    console.log("Something went wrong!");
-    console.error(error)
-});
-    await faceapi.loadTinyFaceDetectorModel('/models')
-    await faceapi.loadSsdMobilenetv1Model('/models')
-    await faceapi.loadFaceLandmarkModel('/models')
-    await faceapi.loadFaceRecognitionModel('/models')
-});
+}
+
+
+if (closeButton){
+    closeButton.addEventListener('click', function(){
+        video.pause();
+        video.currentTime = 0;
+        video.srcObject = null;
+        const tracks = localstream.getTracks()
+        tracks.forEach(function(track){
+            track.stop();
+        })
+        localstream = '';
+    })
+}   
+
+
+
+if (video){
     
-
-
-pictureButton.addEventListener('click', function(){
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    let image_data_url = canvas.toDataURL('image/jpeg');
-    image_file = dataUrlToFile(image_data_url, 'imagetaken.png')
-})
-
-closeButton.addEventListener('click', function(){
-    video.pause();
-    video.currentTime = 0;
-    video.srcObject = null;
-    const tracks = localstream.getTracks()
-    tracks.forEach(function(track){
-        track.stop();
-    })
-    localstream = '';
-})
-
-
 video.addEventListener('play', async ()=>{
     if (!streaming){
         height = video.videoHeight / (video.videoWidth / width);
@@ -137,31 +141,34 @@ video.addEventListener('play', async ()=>{
         }, 100)  
 
 })
-
-registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(registerForm);
-    let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
-    labeledDescriptor = labeledDescriptor.toJSON()
-    labeledDescriptor = JSON.stringify(labeledDescriptor)
-    if (formData.get('studentImage').name == '' ){
-        formData.set('studentImage', image_file)
-    }
-    formData.set('faceDescriptor', labeledDescriptor)
-    fetch('/register',{
-        method: 'post',
-        body: formData,
-        headers:{
-            'Access-Control-Allow-Origin': '*'
+}
+if( registerForm){
+    registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+        let labeledDescriptor = new faceapi.LabeledFaceDescriptors(formData.get('firstName'),facedescriptor)
+        labeledDescriptor = labeledDescriptor.toJSON()
+        labeledDescriptor = JSON.stringify(labeledDescriptor)
+        if (formData.get('studentImage').name == '' ){
+            formData.set('studentImage', image_file)
         }
-    }).then( ()=>{
-        window.location.assign('/all-students');
-    }).catch ((err)=>
-    {
-        console.error(err)
-
+        formData.set('faceDescriptor', labeledDescriptor)
+        fetch('/register',{
+            method: 'post',
+            body: formData,
+            headers:{
+                'Access-Control-Allow-Origin': '*'
+            }
+        }).then( ()=>{
+            window.location.assign('/all-students');
+        }).catch ((err)=>
+        {
+            console.error(err)
+    
+        })
     })
-})
+}
+
 
 
 

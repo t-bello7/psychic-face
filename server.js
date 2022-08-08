@@ -6,35 +6,49 @@ const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 const multer = require('multer');
 const authRouter = require("./auth");
-
 const  cors = require('cors');
+const mysql = require('mysql2');
 
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
 
-
 // Start a server instance with express
 const app = express();
 app.use(cors({origin:'*'}));
 
-
-const router = express.Router();
 // Start a database instance
-const mysql = require('mysql2');
-
-
 const con = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER_DB,
   port: process.env.PORT_DB,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  // connectionLimit: 20,
+  connectionLimit: 20,
   queueLimit: 0,
   waitForConnections: true
 })
 
+// Set up Auth0 strategy
+const strategy = new Auth0Strategy(
+  {
+    domain: process.env.AUTH0_DOMAIN,
+    clientID: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    callbackURL: process.env.AUTH0_CALLBACK_URL
+  },
+  function(accessToken, refreshToken, extraParams, profile, done) {
+    /**
+     * Access tokens are used to authorize users to an API
+     * (resource server)
+     * accessToken is the token to call the Auth0 API
+     * or a secured third-party API
+     * extraParams.id_token has the JSON Web Token
+     * profile has all the information from the user
+     */
+    return done(null, profile);
+  }
+);
 
 const createStudentDb = async () => { 
  con.connect((err) => {
@@ -89,9 +103,6 @@ let upload = multer({
   
 });
 
-
-
-
 app.use(express.json());
 
 
@@ -99,9 +110,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/uploads',express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "checks")));
-
-
-
 app.use(expressSession(session));
 
 //setting up view's & EJS
@@ -110,25 +118,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 app.set('trust proxy', true)
-const strategy = new Auth0Strategy(
-    {
-      domain: process.env.AUTH0_DOMAIN,
-      clientID: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: process.env.AUTH0_CALLBACK_URL
-    },
-    function(accessToken, refreshToken, extraParams, profile, done) {
-      /**
-       * Access tokens are used to authorize users to an API
-       * (resource server)
-       * accessToken is the token to call the Auth0 API
-       * or a secured third-party API
-       * extraParams.id_token has the JSON Web Token
-       * profile has all the information from the user
-       */
-      return done(null, profile);
-    }
-  );
+
 passport.use(strategy);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -141,23 +131,18 @@ app.use((req, res, next) => {
 
 app.use("/", authRouter);
 
-
 passport.serializeUser((user, done) => {
     done(null, user);
   });
   
-  passport.deserializeUser((user, done) => {
-    done(null, user);
-  });
-
-
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
   
-//routing
 const secured = (req, res, next) => {
     if (req.user) {
       return next();
     }
-    // req.session.returnTo = req.originalUrl;
     res.redirect("/login");
   };
   
@@ -182,8 +167,6 @@ app.get('/all-students', secured,(req, res) =>{
   })
 })
 
-
-
 app.get("/profile", secured, (req, res, next) => {
   const { _raw, _json, ...userProfile } = req.user;
   res.render("user", {
@@ -191,7 +174,6 @@ app.get("/profile", secured, (req, res, next) => {
     userProfile: userProfile
   });
 });
-
 
 app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
   let image = path.join('/uploads/' + req.file.filename)
@@ -213,7 +195,6 @@ app.get("/verify-student", secured, (req, res)=>{
   res.render('verify-student')
 })
 
-
 app.get("/check", secured, (req, res)=>{
   let sql = 'SELECT image_descriptor FROM students';
   con.query(sql, (err, result)=>{
@@ -221,8 +202,6 @@ app.get("/check", secured, (req, res)=>{
     res.json(result)
   })
 });
-
-
 
 app.get("/models/:modelName", (req, res)=>{
   const facePath = path.join(__dirname, `/models/${req.params.modelName}`)
@@ -234,7 +213,6 @@ app.get("/models/:modelName", (req, res)=>{
     res.json(data)
   })
 })
-
 
 app.listen(port, ()=>{
     console.log(`Now listening on port ${port}`)    
