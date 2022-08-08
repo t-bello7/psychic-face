@@ -18,7 +18,7 @@ const app = express();
 app.use(cors({origin:'*'}));
 
 // Start a database instance
-const con = mysql.createConnection({
+const pool = mysql.createPool({
   host: process.env.HOST,
   user: process.env.USER_DB,
   port: process.env.PORT_DB,
@@ -26,6 +26,7 @@ const con = mysql.createConnection({
   database: process.env.DATABASE,
   connectionLimit: 20,
   queueLimit: 0,
+  multipleStatements: true,
   waitForConnections: true
 })
 
@@ -51,10 +52,10 @@ const strategy = new Auth0Strategy(
 );
 
 const createStudentDb = async () => { 
- con.connect((err) => {
+ pool.getConnection((err, connection) => {
     if(err) throw err;
     let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor TEXT, PRIMARY KEY(id))";
-    con.query(sql, function(err, result){
+    connection.query(sql, function(err, result){
       if (err) throw err;
     })
   })
@@ -161,7 +162,7 @@ app.get('/add-student', secured, (req, res)=>{
 
 app.get('/all-students', secured,(req, res) =>{
   let sql = 'SELECT * from students'
-  con.query(sql, (err, result)=>{
+  pool.query(sql, (err, result)=>{
     if (err) throw err;
     res.render('all-students', {items:result})
   })
@@ -184,7 +185,7 @@ app.post('/register',secured, upload.single('studentImage'),(req, res)=>{
       image_descriptor: req.body.faceDescriptor,
     };
   let sql = 'INSERT INTO students SET ?';
-  let query = con.query(sql, obj, (err,result) => {
+  pool.query(sql, obj, (err,result) => {
     if(err) throw err;
     res.redirect('/all-students');
   })  
