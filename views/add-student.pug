@@ -18,7 +18,7 @@ block layout-content
                         input(type="text" id="last_name" name="lastName" placeholder="Last Name").form-control
                     input(hidden name="faceDescriptor")
                     input(type="file" name="studentImage" value="" id="student_image" hidden).form-select
-                    div.d-inline-flex
+                    div.d-inline-flex.flex-column.justify-content-between.flex-lg-row
                         div.video
                             button#start-camera.NavButton Start Camera
                                 i.bi.bi-webcam
@@ -29,7 +29,7 @@ block layout-content
                             button#take-picture.NavButton Take Picture
                                 i.bi.bi-camera
                         canvas(width="320" height="240")#canvas
-                    input(type="submit", value="Register Student" class="btn btn-primary")
+                    button(type="submit" value="submit").btn.btn-primary Register Student
     script(src="js/face-api.min.js" type="module")
         //- script(src="js/detect.js" type="module")   
     script(src="js/main.js" type="module")

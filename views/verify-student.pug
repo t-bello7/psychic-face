@@ -13,14 +13,16 @@ block layout-content
                     //- form(action="" class="check" method="POST" enctype="multipart/form-data")
                     //- div.form-label Upload Image 
                     //-     input(type="file" name="checkImage" id="check_image").form-select
-                    div.flex
+                    div.d-inline-flex
                         div.video
-                            label.form-label Take A Picture 
-                            i#start-camera-check.bi.bi-webcam
+                            button#start-camera-check.NavButton Start Camera 
+                                i.bi.bi-webcam
+                            button#close-camera-check.NavButton Close Camera
+                                i.bi.bi-x-square 
                             div.wrap-check     
                                 video(src="" autoplay="true" width="320" height="240")#video-check
-                            i#close-camera-check.bi.bi-x-square 
-                            i#take-picture-check.bi.bi-camera
+                            button#take-picture-check.NavButton Take Picture
+                                i.bi.bi-camera
                         canvas(width="320" height="240")#canvas-check
 
                     button(data-bs-toggle="modal" data-bs-target="#verticalycentered").verify-button.btn.btn-primary#submit-button Verify 

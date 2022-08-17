@@ -137,7 +137,7 @@ video.addEventListener('play', async ()=>{
         }, 100)
     })
 }
-if( registerForm){
+if(registerForm){
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(registerForm);
@@ -154,13 +154,10 @@ if( registerForm){
             headers:{
                 'Access-Control-Allow-Origin': '*'
             }
-        }).then( ()=>{
+        }).then(()=>{
             window.location.assign('/all-students');
         }).catch ((err)=>
-        {
-            console.error(err)
-    
-        })
+        {console.error(err)})
     })
 }
 

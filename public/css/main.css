@@ -12,10 +12,9 @@
   font-weight: 600;
   font-size: 3rem;
 }
-
 .student-img {
-  width: 100px;
-  height: 100px;
+  width: 4rem;
+  border-radius: 1rem;
 }
 .index {
   min-height: 100vh;
@@ -78,11 +77,6 @@
   cursor: pointer;
   margin: 0 2rem;
 }
-
-.video {
-  margin: 0 2rem;
-}
-
 
 .loader {
   position: fixed;
@@ -409,7 +403,6 @@ h6 {
   color: #008010;
   background-color: #f6f9ff;
 }
-
 .accordion-flush .accordion-button {
   padding: 15px 0;
   background: none;

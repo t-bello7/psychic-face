@@ -1,14 +1,13 @@
-let pictureButtonCheck = document.querySelector('#take-picture-check');
-let cameraButtonCheck = document.querySelector('#start-camera-check');
-let closeButtonCheck = document.querySelector('#close-camera-check');
-let videoCheck = document.querySelector('#video-check');
-let canvasCheck  = document.querySelector('#canvas-check');
+const pictureButtonCheck = document.querySelector('#take-picture-check');
+const cameraButtonCheck = document.querySelector('#start-camera-check');
+const closeButtonCheck = document.querySelector('#close-camera-check');
+const videoCheck = document.querySelector('#video-check');
+const canvasCheck  = document.querySelector('#canvas-check');
 const checkForm = document.querySelector('.check');
-let submitButton = document.querySelector('#submit-button')
-let video = document.querySelector('#video-cam');
-let output = document.querySelector('.verify-output');
-let modalCloseButton = document.querySelector('#close-modal');
-
+const submitButton = document.querySelector('#submit-button')
+const video = document.querySelector('#video-cam');
+const output = document.querySelector('.verify-output');
+const modalCloseButton = document.querySelector('#close-modal');
 let streaming = false;
 let width = 320;
 let height = 0;
@@ -18,7 +17,6 @@ let image_file_check
 let globalDetection
 
 if(cameraButtonCheck){
-    console.log(cameraButtonCheck)
     cameraButtonCheck.addEventListener('click', async function(){
         navigator.mediaDevices.getUserMedia({ video: true, audio: false})
         .then(function(stream){
@@ -31,13 +29,6 @@ if(cameraButtonCheck){
      });    
 }
 
-
-//  pictureButtonCheck.addEventListener('click', function(){
-//      canvasCheck.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-//      let image_data_url = canvas.toDataURL('image/jpeg');
-//      image_file_check = dataUrlToFile(image_data_url, 'imagecheck.png');
-//  })
- 
 if (videoCheck){
     videoCheck.addEventListener('play',()=>{
         if (!streaming){

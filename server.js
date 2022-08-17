@@ -163,7 +163,6 @@ app.get('/all-students', secured,(req, res) =>{
   let sql = 'SELECT * from students'
   pool.query(sql, (err, result)=>{
     if (err) throw err;
-    console.log(result)
     res.render('all-students', {items:result})
   })
 })
