@@ -7,20 +7,16 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 - https://www.youtube.com/watch?v=QQwo4E_B0y8>
 - https://auth0.com/blog/create-a-simple-and-secure-node-express-app
 - https://developer.okta.com/blog/2019/03/11/node-sql-server
+- https://itnext.io/face-api-js-javascript-api-for-face-recognition-in-the-browser-with-tensorflow-js-bcc2a6c4cf07
+- https://www.youtube.com/watch?v=CVClHLwv-4I
+
 
 ## Technologies Used
-
-- Auth0 for authentications
-- Node Js and Experss for Server
-- Plain Html and Cs
-- My SQL for database services
-
-<!-- ## User Stories
-
-1. As a user, I want to be able to login and logout -->
-
-<!-- ## Planning Stories
- -->
+- HTML, JavaScript & CSS
+- Auth0 
+- PUG
+- Express
+- My SQL 
  
 ## Problems I ran into (Front-end)
 
@@ -35,7 +31,5 @@ Hey there ! Welcome to my first paid gig after starting a software development j
 
 1. Improve on querying the database without a student ID , Just a facial recognition.
 2. Improve on makeing the student ID unique and user-friendly
-
-<!-- ## Original Wireframe Sketch
-
- -->
+3. Only register student once
+4. 

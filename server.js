@@ -8,7 +8,6 @@ const multer = require('multer');
 const authRouter = require("./auth");
 const cors = require('cors');
 const mysql = require('mysql2');
-
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
@@ -51,7 +50,7 @@ const strategy = new Auth0Strategy(
   }
 );
 
-const createStudentDb = async () => { 
+const createStudentDb = () => { 
  pool.getConnection((err, connection) => {
     if(err) throw err;
     let sql = "CREATE TABLE IF NOT EXISTS students(id int(5) NOT NULL AUTO_INCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, student_image VARCHAR(255) NOT NULL, image_descriptor TEXT, PRIMARY KEY(id))";
@@ -92,9 +91,7 @@ let checkFileType = (file, cb) =>{
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   //check mimetype
   const mimetype = filetypes.test(file.mimetype);
-
   (mimetype && extname ) ? cb(null, true) : cb('Error: Images Only !  ')
-
 }
 
 let upload = multer({ 

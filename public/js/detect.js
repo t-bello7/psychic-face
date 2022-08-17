@@ -88,23 +88,19 @@ if (submitButton){
             // let descriptor_obj 
             let floatArray
             let labeledDescriptor 
+            let imageDescriptorArr
             labeledDescriptor =  data.map( item => {
-                floatArray = new Float32Array(item.image_descriptor.descriptors[0])
+                imageDescriptorArr = JSON.parse(item.image_descriptor)
+                floatArray = new Float32Array(imageDescriptorArr.descriptors[0])
                 floatArray = [floatArray]
-                return new faceapi.LabeledFaceDescriptors(item.image_descriptor.label, floatArray)
+                return new faceapi.LabeledFaceDescriptors(imageDescriptorArr.label, floatArray)
             })
-    
-            console.log(labeledDescriptor)
-            // reference
             const faceMatcher = new faceapi.FaceMatcher(labeledDescriptor, threshold)
-            console.log(faceMatcher)
-    
             // recognize
             const results = globalDetection.map(fd => faceMatcher.findBestMatch(fd.descriptor))
             output.innerHTML += `
-            Yes this is , ${results[0].label}
+            Yes This is a verified student
             `
-            console.log(results[0])
         })
     })
 }
