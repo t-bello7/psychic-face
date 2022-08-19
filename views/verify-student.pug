@@ -5,36 +5,42 @@ block layout-content
             ol.breadcrumb 
                 li.breadcrumb-item 
                     a(href="/home") Home 
-                li.breadcrumb-item.active Dashboard
-            .card 
-                .card-body
-                    h1.card-title Verify A Student 
+                li.breadcrumb-item.active Verify Student
+        .card 
+            .card-body 
+                h1.card-title How to verify a student
+                div(style="position: relative; padding-bottom: 56.25%; height: 0;")
+                    iframe(src="https://www.loom.com/embed/10b4c5aab7754b2093a3fdaa8baf0dec" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;")
+        .card 
+            .card-body
+                h1.card-title Verify Student 
 
-                    //- form(action="" class="check" method="POST" enctype="multipart/form-data")
-                    //- div.form-label Upload Image 
-                    //-     input(type="file" name="checkImage" id="check_image").form-select
-                    h3 ** After starting camera please wait for your face description to load before taking picture **
+                //- form(action="" class="check" method="POST" enctype="multipart/form-data")
+                //- div.form-label Upload Image 
+                //-     input(type="file" name="checkImage" id="check_image").form-select
+                h3.alert.alert-warning After starting camera please wait for your face description to load before taking picture
 
 
-                    div.d-inline-flex
-                        div.video
-                            button#start-camera-check.NavButton Start Camera 
-                                i.bi.bi-webcam
-                            button#close-camera-check.NavButton Close Camera
-                                i.bi.bi-x-square 
-                            div.wrap-check     
-                                video(src="" autoplay="true" width="320" height="240")#video-check
-                            button#take-picture-check.NavButton Take Picture
-                                i.bi.bi-camera
-                        canvas(width="320" height="240")#canvas-check
+                div.d-inline-flex
+                    div.video
+                        button#start-camera-check.NavButton Start Camera 
+                            i.bi.bi-webcam
+                        button#close-camera-check.NavButton Close Camera
+                            i.bi.bi-x-square 
+                        div.wrap-check     
+                            video(src="" autoplay="true" width="320" height="240")#video-check
+                        button#take-picture-check.NavButton Take Picture
+                            i.bi.bi-camera
+                    canvas(width="320" height="240")#canvas-check
 
-                    button(data-bs-toggle="modal" data-bs-target="#verticalycentered").verify-button.btn.btn-primary#submit-button Verify 
-                    .modal.fade#verticalycentered(tabindex="-1")
-                        .modal-dialog.modal-dialog-centered 
-                            .modal-content 
-                                .modal-header 
-                                    .modal-title 
-                                    button(type="button" data-bs-dismiss="modal" arial-label="Close").btn-close#close-modal
-                                .modal-body.verify-output
-                                .modal-footer 
-                                    button(data-bs-dismiss="modal").btn.btn-secondary#close-modal Close 
+                button(data-bs-toggle="modal" data-bs-target="#verticalycentered").verify-button.btn.btn-primary#submit-button Verify 
+                .modal.fade#verticalycentered(tabindex="-1")
+                    .modal-dialog.modal-dialog-centered 
+                        .modal-content 
+                            .modal-header 
+                                .modal-title 
+                                button(type="button" data-bs-dismiss="modal" arial-label="Close").btn-close#close-modal
+                            .modal-body.verify-output
+                            .modal-footer 
+                                button(data-bs-dismiss="modal").btn.btn-secondary#close-modal Close 
+    

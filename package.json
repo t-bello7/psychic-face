@@ -4,7 +4,8 @@
   "description": "This is a face-detector-app",
   "keywords": [
     "face-detector",
-    "heroku"
+    "heroku",
+    "facial recoginition"
   ],
   "dependencies": {
     "canvas": "^2.8.0",

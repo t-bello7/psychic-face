@@ -1,15 +1,20 @@
 extends layout
 block layout-content 
     main#main.main
-        .pagetitle 
-            h1 Add Student
-            nav 
-                ol.breadcrumb 
-                    li.breadcrumb-item 
-                        a(href="/home") Home 
-                    li.breadcrumb-item.active Add Student
-            div 
-                form(action="" class="register" method="POST" enctype="multipart/form-data").row.g-3
+        nav 
+            ol.breadcrumb 
+                li.breadcrumb-item 
+                    a(href="/home") Home 
+                li.breadcrumb-item.active Add Student
+        .card
+            .card-body
+                h1.card-title How to add a student
+                div(style="position: relative; padding-bottom: 56.25%; height: 0;")
+                    iframe(src="https://www.loom.com/embed/cbf168365aaf4c4cab9d35591190bf5d" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;")
+        form(action="" class="register" method="POST" enctype="multipart/form-data").card
+            .card-body
+                h1.card-title Add Student
+                .row.g-3 
                     div.col-md-6
                         label(for="firstName").form-label First Name
                         input(type="text" id="first_name" name="firstName" placeholder="First Name").form-control
@@ -18,7 +23,7 @@ block layout-content
                         input(type="text" id="last_name" name="lastName" placeholder="Last Name").form-control
                     input(hidden name="faceDescriptor")
                     input(type="file" name="studentImage" value="" id="student_image" hidden).form-select
-                    h3 ** After starting camera please wait for your face description to load before taking picture **
+                    h3.alert.alert-warning After starting camera please wait for your face description to load before taking picture 
                     div.d-inline-flex.flex-column.justify-content-between.flex-lg-row
                         div.video
                             button#start-camera.NavButton Start Camera
@@ -31,6 +36,7 @@ block layout-content
                                 i.bi.bi-camera
                         canvas(width="320" height="240")#canvas
                     button(type="submit" value="submit").btn.btn-primary Register Student
+        
     script(src="js/face-api.min.js" type="module")
         //- script(src="js/detect.js" type="module")   
     script(src="js/main.js" type="module")
